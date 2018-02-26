@@ -15,12 +15,16 @@ public class DualStickFly : MonoBehaviour {
 
 	public float maxForce = 1.0f;
 
-	[Header("Wing Blow Settings")]
+	[Header("Wing Settings")]
+	public GameObject LeftWing; 
+	public GameObject RightWing;
 	public AnimationCurve forceProfile;
+	public float blowWingMaxAngle = 45;
 	bool canBlow = true;
 	bool blowing = false;
 	float lastBlowTime;
 	float profileDuration;
+	float[] integralCurve;
 
 	float RHorizontal;
 	float RVertical;
@@ -28,7 +32,6 @@ public class DualStickFly : MonoBehaviour {
 	float LVertical;
 	float RTrigger;
 	float LTrigger;
-
 
 	// Use this for initialization
 	void Awake() {
@@ -39,6 +42,7 @@ public class DualStickFly : MonoBehaviour {
 	void Start () {
 		profileDuration = forceProfile.keys [forceProfile.length - 1].time;
 		print (profileDuration);
+		IntegrateCurve ();
 	}
 	
 	// Update is called once per frame
@@ -53,6 +57,10 @@ public class DualStickFly : MonoBehaviour {
 
 		eyes.transform.rotation = HRotBody.transform.rotation * VRotBody.transform.rotation;
 
+		GetComponent<Rigidbody> ().rotation = HRotBody.transform.rotation;
+
+
+
 
 	}
 
@@ -61,7 +69,8 @@ public class DualStickFly : MonoBehaviour {
 		HRotBody.AddRelativeTorque (Vector3.up * RHorizontal * maxHTorque);
 		VRotBody.AddRelativeTorque (Vector3.right * RVertical * maxVTorque);
 
-		IcarusFlight ();
+		BasicFlight ();
+		//IcarusFlight ();
 	}
 
 	void BasicFlight() {
@@ -106,7 +115,60 @@ public class DualStickFly : MonoBehaviour {
 			} else {
 
 				body.AddForce(force * maxForce * forceProfile.Evaluate(t));
+				LeftWing.transform.localEulerAngles = new Vector3(0, 0, blowWingMaxAngle * Integral(t));
+				RightWing.transform.localEulerAngles = new Vector3(0, 0, -blowWingMaxAngle * Integral(t));
 			}
 		}
+	}
+
+	public void IntegrateCurve()
+	{
+		float x_high = profileDuration;
+		float x_low = 0.0f;
+		float N_steps = 50.0f;
+
+		float h = (x_high - x_low) / N_steps;
+		float res = 0.0f;
+
+		integralCurve = new float[(int)N_steps];
+		float max = 0.0f;
+
+		for (int i = 0; i < N_steps; i++)
+		{
+			res += forceProfile.Evaluate(x_low + i * h);
+
+			if (max < res * h)
+				max = res * h;
+			
+			integralCurve [i] = res * h;
+		}
+
+		//normalize to max
+		for (int i = 0; i < N_steps; i++) {
+
+			integralCurve [i] = integralCurve [i] / max;
+		}
+
+		return;
+	}
+
+	float Integral(float time){
+		
+		float N_steps = integralCurve.Length;
+		float x = time * N_steps / profileDuration;
+
+		int x_low = Mathf.FloorToInt (x);
+		int x_high = Mathf.CeilToInt (x);
+
+		if (x_low != x_high) {
+			
+			return Mathf.Lerp (
+				integralCurve [x_low],
+				integralCurve [x_high],
+				x - x_low);
+			
+		}
+
+		return integralCurve [x_high];
 	}
 }
