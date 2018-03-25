@@ -1282,16 +1282,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 114936429197018136, guid: 5e136cd3bd28b7243b722413d01b5c27,
-        type: 2}
-      propertyPath: HRotBody
-      value: 
-      objectReference: {fileID: 177054686}
-    - target: {fileID: 114936429197018136, guid: 5e136cd3bd28b7243b722413d01b5c27,
-        type: 2}
-      propertyPath: VRotBody
-      value: 
-      objectReference: {fileID: 470548844}
     - target: {fileID: 114248406498220162, guid: 5e136cd3bd28b7243b722413d01b5c27,
         type: 2}
       propertyPath: viewIdField

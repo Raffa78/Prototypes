@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DualStickFly : Photon.MonoBehaviour {
+public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 
 	Rigidbody body;
 
@@ -46,6 +46,9 @@ public class DualStickFly : Photon.MonoBehaviour {
 		profileDuration = forceProfile.keys [forceProfile.length - 1].time;
 		print (profileDuration);
 		IntegrateCurve ();
+
+		PhotonNetwork.sendRate = 15;
+		PhotonNetwork.sendRateOnSerialize = 15;
 	}
 	
 	// Update is called once per frame
@@ -80,8 +83,8 @@ public class DualStickFly : Photon.MonoBehaviour {
 	void BasicFlight() {
 		
 		body.AddForce (
-			HRotBody.transform.right * LHorizontal * maxForce
-			+ HRotBody.transform.forward * LVertical * maxForce 
+			transform.right * LHorizontal * maxForce
+			+ transform.forward * LVertical * maxForce 
 			+ Vector3.up * RTrigger * maxForce
 			- Vector3.up * LTrigger * maxForce
 		);
