@@ -6,44 +6,45 @@ public class AnimatedSword : MonoBehaviour {
 	Animator animator;
 	public Rigidbody playerBody;
 
-	public float swingCooldown = 0.0f;
-	float swingTime;
 	bool swingAlreadyHit = false;
 
 	public float hitForce;
 	public float hitRecoilForceRatio;
 
-	void Awake() {
+	bool swingInCooldown = false;
 
-		swingTime = -Mathf.Infinity;
+	void Awake() {
+		
 		animator = GetComponent<Animator> ();
 
 		animator.GetBehaviour<SwordSMB> ().onIdle.AddListener (OnIdle);
 		animator.GetBehaviour<SwordSMB> ().onSwingBack.AddListener (OnSwingBack);
+
+		GetComponentInChildren<Collider> ().enabled = false;
 	}
 
 	void Update () {
 		
 		if(Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Fire1"))
 		{
-			if(!SwingInCooldown())
+			if(!swingInCooldown)
 			{
-				animator.SetTrigger ("Swing");		
-				swingTime = Time.time;
+				animator.SetTrigger ("Swing");	
 				swingAlreadyHit = false;
+				swingInCooldown = true;
+				GetComponentInChildren<Collider> ().enabled = true;
 			}
-
 		}	
-
 	}
 
 	void OnSwingBack()
 	{
-		
+		GetComponentInChildren<Collider> ().enabled = false;
 	}
 
 	void OnIdle()
 	{
+		swingInCooldown = false;
 	}
 
 	void OnTriggerEnter(Collider collider)
@@ -61,8 +62,4 @@ public class AnimatedSword : MonoBehaviour {
 		swingAlreadyHit = true;
 	}
 
-	bool SwingInCooldown()
-	{
-		return Time.time < (swingTime + swingCooldown);
-	}
 }

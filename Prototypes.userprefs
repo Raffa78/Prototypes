@@ -1,0 +1,16 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\AnimatedSword.cs">
+    <Files>
+      <File FileName="Assets\DualStickFly.cs" Line="1" Column="1" />
+      <File FileName="Assets\PhysicSword.cs" Line="1" Column="1" />
+      <File FileName="Assets\AnimatedSword.cs" Line="26" Column="18" />
+      <File FileName="Assets\BallThrower.cs" Line="1" Column="1" />
+      <File FileName="Assets\SwordSMB.cs" Line="18" Column="3" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
