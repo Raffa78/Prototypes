@@ -49,6 +49,11 @@ public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 
 		PhotonNetwork.sendRate = 15;
 		PhotonNetwork.sendRateOnSerialize = 15;
+
+		if (!m_PhotonView.isMine) {
+			
+			GetComponentInChildren<Camera> ().enabled = false;
+		}
 	}
 	
 	// Update is called once per frame
