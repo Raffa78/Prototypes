@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DualStickFly : MonoBehaviour {
+public class DualStickFly : Photon.MonoBehaviour {
 
 	Rigidbody body;
 
@@ -33,10 +33,13 @@ public class DualStickFly : MonoBehaviour {
 	float RTrigger;
 	float LTrigger;
 
+	PhotonView m_PhotonView;
+
 	// Use this for initialization
 	void Awake() {
 		
 		body = GetComponent<Rigidbody> ();
+		m_PhotonView = GetComponent<PhotonView>();
 	}
 
 	void Start () {
@@ -47,6 +50,7 @@ public class DualStickFly : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		return;
 		
 		RHorizontal = Input.GetAxis ("RHorizontal");
 		RVertical = Input.GetAxis ("RVertical");
@@ -65,9 +69,9 @@ public class DualStickFly : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
-
-		HRotBody.AddRelativeTorque (Vector3.up * RHorizontal * maxHTorque);
-		VRotBody.AddRelativeTorque (Vector3.right * RVertical * maxVTorque);
+		
+		//HRotBody.AddRelativeTorque (Vector3.up * RHorizontal * maxHTorque);
+		//VRotBody.AddRelativeTorque (Vector3.right * RVertical * maxVTorque);
 
 		BasicFlight ();
 		//IcarusFlight ();
@@ -170,5 +174,35 @@ public class DualStickFly : MonoBehaviour {
 		}
 
 		return integralCurve [x_high];
+	}
+
+
+	public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+	{
+		if (stream.isWriting) {
+
+			RHorizontal = Input.GetAxis ("RHorizontal");
+			RVertical = Input.GetAxis ("RVertical");
+			LHorizontal = Input.GetAxis ("LHorizontal");
+			LVertical = Input.GetAxis ("LVertical");
+			RTrigger = Input.GetAxis ("RTrigger");
+			LTrigger = Input.GetAxis ("LTrigger");
+
+			stream.SendNext (RHorizontal);
+			stream.SendNext (RVertical);
+			stream.SendNext (LHorizontal);
+			stream.SendNext (LVertical);
+			stream.SendNext (RTrigger);
+			stream.SendNext (LTrigger);
+
+		} else {
+			
+			RHorizontal = (float)stream.ReceiveNext ();
+			RVertical = (float)stream.ReceiveNext ();
+			LHorizontal = (float)stream.ReceiveNext ();
+			LVertical = (float)stream.ReceiveNext ();
+			RTrigger = (float)stream.ReceiveNext ();
+			LTrigger = (float)stream.ReceiveNext ();
+		}
 	}
 }
