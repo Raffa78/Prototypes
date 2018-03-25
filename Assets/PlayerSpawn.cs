@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerSpawn : MonoBehaviour {
 
-	static 
 	// Use this for initialization
 	void OnJoinedRoom () {
 		
