@@ -515,9 +515,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 999480703}
-  - component: {fileID: 999480702}
   - component: {fileID: 999480704}
   - component: {fileID: 999480705}
+  - component: {fileID: 999480706}
   m_Layer: 0
   m_Name: NetManager
   m_TagString: Untagged
@@ -525,19 +525,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &999480702
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 999480701}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c1b84a427010e0469ce0df07ab64dbc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AutoConnect: 1
-  Version: 1
 --- !u!4 &999480703
 Transform:
   m_ObjectHideFlags: 0
@@ -574,6 +561,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Skin: {fileID: 11400000, guid: 0a36872c871b46d4ea5e4e064f3bf975, type: 2}
+--- !u!114 &999480706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 999480701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41cec475dabd9cd4f971453830d8eb92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AutoConnect: 1
+  Version: 1
 --- !u!1 &1242741275
 GameObject:
   m_ObjectHideFlags: 0
