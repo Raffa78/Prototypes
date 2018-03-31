@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DualStickFly : Photon.PunBehaviour, IPunObservable {
+public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 
 	Rigidbody body;
 
