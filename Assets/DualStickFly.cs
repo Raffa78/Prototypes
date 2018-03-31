@@ -189,7 +189,6 @@ public class DualStickFly : Photon.PunBehaviour, IPunObservable {
 		return integralCurve [x_high];
 	}
 
-
 	public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
 	{
 		if (stream.isWriting) {
