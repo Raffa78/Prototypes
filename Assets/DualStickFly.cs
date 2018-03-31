@@ -54,8 +54,8 @@ public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 			GetComponentInChildren<Camera> ().enabled = false;
 
 			GameObject newPlayerObject = PhotonNetwork.Instantiate( "PlayerFeedback", Vector3.zero, Quaternion.identity, 0 );
-			newPlayerObject.transform.parent = transform;
-			newPlayerObject.transform.localPosition = Vector3.zero;
+			newPlayerObject.AddComponent<FollowTransform> ().target = transform;
+
 		}
 	}
 	
