@@ -43,7 +43,7 @@ public class JoinNamedRoom : Photon.MonoBehaviour
 		Debug.Log("OnConnectedToMaster() was called by PUN. Now this client is connected and could join a room. Calling: PhotonNetwork.JoinOrCreateRoom();");
 		//PhotonNetwork.JoinRandomRoom();
 
-		PhotonNetwork.JoinOrCreateRoom ("Room1", new RoomOptions () { isVisible = true, MaxPlayers = 4 }, TypedLobby.Default);
+		PhotonNetwork.JoinOrCreateRoom ("Room1", new RoomOptions () { MaxPlayers = 4 }, TypedLobby.Default);
 	}
 
 	public virtual void OnJoinedLobby()

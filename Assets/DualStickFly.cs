@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
+public class DualStickFly : Photon.PunBehaviour, IPunObservable {
 
 	Rigidbody body;
 
@@ -47,14 +47,15 @@ public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 		print (profileDuration);
 		IntegrateCurve ();
 
-		PhotonNetwork.sendRate = 15;
-		PhotonNetwork.sendRateOnSerialize = 15;
+	}
+	void OnJoinedRoom() {
+		print ("joined room");
 
 		if (!m_PhotonView.isMine) {
 			
 			GetComponentInChildren<Camera> ().enabled = false;
 
-			GameObject newPlayerObject = PhotonNetwork.Instantiate( "PlayerFeedback", Vector3.zero, Quaternion.identity, (byte)1 );
+			GameObject newPlayerObject = PhotonNetwork.Instantiate( "PlayerFeedback", Vector3.zero, Quaternion.identity, 0 );
 			newPlayerObject.transform.parent = transform;
 			newPlayerObject.transform.localPosition = Vector3.zero;
 		}
