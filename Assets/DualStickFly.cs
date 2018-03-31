@@ -47,8 +47,6 @@ public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 		print (profileDuration);
 		IntegrateCurve ();
 
-	}
-	void OnJoinedRoom() {
 		print ("joined room");
 
 		if (!m_PhotonView.isMine) {
