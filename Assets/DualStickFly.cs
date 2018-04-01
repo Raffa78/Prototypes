@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 
-	GameObject bodyObject;
+	Transform bodyObject;
 	Rigidbody body;
 
 	public Rigidbody HRotBody;
