@@ -9,10 +9,14 @@ public class BodyProxy : MonoBehaviour {
 	void Awake() {
 		photonView = GetComponent<PhotonView> ();
 
-		if (photonView.isMine) {
+		if (photonView.isMine) 
+		{
+			GetComponent<Rigidbody> ().isKinematic = true;
 			GetComponent<MeshRenderer> ().enabled = false;
 			transform.GetChild (0).gameObject.SetActive (false);
-		} else {
+		} 
+		else 
+		{
 			GetComponent<FollowTransform> ().enabled = false;
 		}
 	}
