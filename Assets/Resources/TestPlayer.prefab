@@ -277,9 +277,9 @@ GameObject:
   - component: {fileID: 33282331318071050}
   - component: {fileID: 23629045390981734}
   - component: {fileID: 114810624016274944}
-  - component: {fileID: 114208696594324904}
   - component: {fileID: 114644347941978078}
   - component: {fileID: 114996434801726826}
+  - component: {fileID: 114390371543895586}
   m_Layer: 0
   m_Name: BodyProxy
   m_TagString: Untagged
@@ -961,17 +961,6 @@ MonoBehaviour:
   playerBody: {fileID: 0}
   hitForce: 2000
   hitRecoilForceRatio: 0.2
---- !u!114 &114208696594324904
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1933776058688684}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 008cfb4700d571e4284f3641b8b7e5fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114248406498220162
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1024,6 +1013,17 @@ MonoBehaviour:
   instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
+--- !u!114 &114390371543895586
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1933776058688684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33f279af8eae6c149a967f5f9eeb9a09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114396949832534120
 MonoBehaviour:
   m_ObjectHideFlags: 1
