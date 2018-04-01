@@ -1080,7 +1080,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerBody: {fileID: 54746579474168192}
-  hitForce: 2000
+  hitForce: 20
   hitRecoilForceRatio: 0.2
 --- !u!114 &114644347941978078
 MonoBehaviour:
