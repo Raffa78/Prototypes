@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AnimatedSword : MonoBehaviour {
+	PhotonView photonView;
 	Animator animator;
 	public Rigidbody playerBody;
 
@@ -14,6 +15,13 @@ public class AnimatedSword : MonoBehaviour {
 	bool swingInCooldown = false;
 
 	void Awake() {
+
+		photonView = GetComponent<PhotonView> ();
+
+		if (!photonView.isMine) {
+			enabled = false;
+			return;
+		}
 		
 		animator = GetComponent<Animator> ();
 
@@ -56,8 +64,8 @@ public class AnimatedSword : MonoBehaviour {
 		Vector3 impulse = collider.attachedRigidbody.position - playerBody.position;
 		impulse.Normalize ();
 
-		collider.attachedRigidbody.AddForce (hitForce * impulse, ForceMode.Impulse);
-		playerBody.AddForce (-hitRecoilForceRatio * hitForce * impulse, ForceMode.Impulse);
+		//collider.attachedRigidbody.AddForce (hitForce * impulse, ForceMode.Impulse);
+		//playerBody.AddForce (-hitRecoilForceRatio * hitForce * impulse, ForceMode.Impulse);
 
 		swingAlreadyHit = true;
 	}
