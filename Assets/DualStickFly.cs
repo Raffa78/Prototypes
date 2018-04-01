@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 
+	GameObject bodyObject;
 	Rigidbody body;
 
 	public Rigidbody HRotBody;
@@ -49,23 +50,31 @@ public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 
 		print ("joined room");
 
+		bodyObject = transform.Find ("Body");
+
+		if (bodyObject == null)
+			Debug.LogError ("No object named Body under this");
+
+		body = GetComponent<Rigidbody> ();
+
 		if (!m_PhotonView.isMine) {
 			
 			GetComponentInChildren<Camera> ().enabled = false;
 
-			GameObject newPlayerObject = PhotonNetwork.Instantiate ("PlayerFeedback", Vector3.zero, Quaternion.identity, 0);
-			newPlayerObject.AddComponent<FollowTransform> ().target = transform;
+			//GameObject newPlayerObject = PhotonNetwork.Instantiate ("PlayerFeedback", Vector3.zero, Quaternion.identity, 0);
+			//newPlayerObject.AddComponent<FollowTransform> ().target = transform;
 
-
+			body.isKinematic = true;
 
 		} else {
 			print ("net: " + PhotonNetwork.sendRate + " " + PhotonNetwork.sendRateOnSerialize);
+
+
 		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		return;
 		
 		RHorizontal = Input.GetAxis ("RHorizontal");
 		RVertical = Input.GetAxis ("RVertical");
@@ -193,6 +202,8 @@ public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 
 	public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
 	{
+		return;
+
 		if (stream.isWriting) {
 
 			RHorizontal = Input.GetAxis ("RHorizontal");
