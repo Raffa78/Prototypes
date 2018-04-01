@@ -39,7 +39,6 @@ public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 	// Use this for initialization
 	void Awake() {
 		
-		body = GetComponent<Rigidbody> ();
 		m_PhotonView = GetComponent<PhotonView>();
 	}
 
@@ -55,7 +54,12 @@ public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 		if (bodyObject == null)
 			Debug.LogError ("No object named Body under this");
 
-		body = GetComponent<Rigidbody> ();
+		body = bodyObject.GetComponent<Rigidbody> ();
+
+		eyes = bodyObject.Find ("Eyes");
+
+		if (eyes == null)
+			Debug.LogError ("No object named Eyes under this");
 
 		if (!m_PhotonView.isMine) {
 			
@@ -65,6 +69,7 @@ public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 			//newPlayerObject.AddComponent<FollowTransform> ().target = transform;
 
 			body.isKinematic = true;
+			eyes.gameObject.SetActive (false);
 
 		} else {
 			print ("net: " + PhotonNetwork.sendRate + " " + PhotonNetwork.sendRateOnSerialize);
@@ -85,7 +90,7 @@ public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 
 		eyes.transform.rotation = HRotBody.transform.rotation * VRotBody.transform.rotation;
 
-		GetComponent<Rigidbody> ().rotation = HRotBody.transform.rotation;
+		body.rotation = HRotBody.transform.rotation;
 
 
 
@@ -94,8 +99,8 @@ public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 
 	void FixedUpdate() {
 		
-		//HRotBody.AddRelativeTorque (Vector3.up * RHorizontal * maxHTorque);
-		//VRotBody.AddRelativeTorque (Vector3.right * RVertical * maxVTorque);
+		HRotBody.AddRelativeTorque (Vector3.up * RHorizontal * maxHTorque);
+		VRotBody.AddRelativeTorque (Vector3.right * RVertical * maxVTorque);
 
 		BasicFlight ();
 		//IcarusFlight ();
@@ -104,8 +109,8 @@ public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 	void BasicFlight() {
 		
 		body.AddForce (
-			transform.right * LHorizontal * maxForce
-			+ transform.forward * LVertical * maxForce 
+			bodyObject.right * LHorizontal * maxForce
+			+ bodyObject.forward * LVertical * maxForce 
 			+ Vector3.up * RTrigger * maxForce
 			- Vector3.up * LTrigger * maxForce
 		);
