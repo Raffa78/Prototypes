@@ -78,4 +78,9 @@ public class AnimatedSword : MonoBehaviour {
 		Rigidbody body = PhotonView.Find (ID).GetComponent<Rigidbody>();
 		body.AddForce (hitForce * impulse, ForceMode.Impulse);
 	}
+
+	void FixedUpdate()
+	{
+		
+	}
 }
