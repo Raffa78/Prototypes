@@ -74,6 +74,7 @@ public class AnimatedSword : MonoBehaviour {
 	[PunRPC]
 	public void SwordHit(int ID, Vector3 impulse)
 	{
+		print ("HIT!");
 		Rigidbody body = PhotonView.Find (ID).GetComponent<Rigidbody>();
 		body.AddForce (hitForce * impulse, ForceMode.Impulse);
 	}
