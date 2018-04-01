@@ -94,9 +94,9 @@ public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 		if (Input.GetKey (KeyCode.D))
 			LHorizontal = 1;
 		if (Input.GetKey (KeyCode.W))
-			LVertical = -1;
-		if (Input.GetKey (KeyCode.S))
 			LVertical = 1;
+		if (Input.GetKey (KeyCode.S))
+			LVertical = -1;
 			
 
 		eyes.transform.rotation = HRotBody.transform.rotation * VRotBody.transform.rotation;
