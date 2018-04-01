@@ -8,6 +8,8 @@ public class FollowTransform : MonoBehaviour {
 	PhotonView photonView;
 
 	void Awake(){
+		photonView = GetComponent<PhotonView> ();
+
 		if (!photonView.isMine) {
 			enabled = false;
 		}
