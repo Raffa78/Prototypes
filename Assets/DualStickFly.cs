@@ -65,7 +65,7 @@ public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 
 			//GameObject newPlayerObject = PhotonNetwork.Instantiate ("PlayerFeedback", Vector3.zero, Quaternion.identity, 0);
 			//newPlayerObject.AddComponent<FollowTransform> ().target = transform;
-			Destroy(body);
+			body.isKinematic = true;
 			//body.isKinematic = true;
 			eyes.gameObject.SetActive (false);
 
