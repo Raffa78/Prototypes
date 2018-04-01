@@ -62,8 +62,6 @@ public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 			Debug.LogError ("No object named Eyes under this");
 
 		if (!m_PhotonView.isMine) {
-			
-			GetComponentInChildren<Camera> ().enabled = false;
 
 			//GameObject newPlayerObject = PhotonNetwork.Instantiate ("PlayerFeedback", Vector3.zero, Quaternion.identity, 0);
 			//newPlayerObject.AddComponent<FollowTransform> ().target = transform;
