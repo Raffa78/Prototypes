@@ -11,7 +11,7 @@ public class BodyProxy : MonoBehaviour {
 
 		if (photonView.isMine) 
 		{
-			GetComponent<Rigidbody> ().isKinematic = true;
+			//GetComponent<Rigidbody> ().isKinematic = true;
 			GetComponent<MeshRenderer> ().enabled = false;
 			transform.GetChild (0).gameObject.SetActive (false);
 		} 
