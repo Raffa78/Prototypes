@@ -80,6 +80,9 @@ public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 	
 	// Update is called once per frame
 	void Update () {
+
+		if (!m_PhotonView.isMine)
+			return;
 		
 		RHorizontal = Input.GetAxis ("RHorizontal");
 		RVertical = Input.GetAxis ("RVertical");
@@ -98,6 +101,9 @@ public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 	}
 
 	void FixedUpdate() {
+
+		if (!m_PhotonView.isMine)
+			return;
 		
 		HRotBody.AddRelativeTorque (Vector3.up * RHorizontal * maxHTorque);
 		VRotBody.AddRelativeTorque (Vector3.right * RVertical * maxVTorque);
