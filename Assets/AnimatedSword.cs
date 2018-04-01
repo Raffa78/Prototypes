@@ -63,6 +63,8 @@ public class AnimatedSword : MonoBehaviour {
 
 		Vector3 impulse = collider.attachedRigidbody.position - playerBody.position;
 		impulse.Normalize ();
+
+		print (collider.attachedRigidbody.gameObject.name);
 				
 		photonView.RPC ("SwordHit", PhotonTargets.Others, collider.attachedRigidbody.GetComponent<PhotonView> ().viewID, impulse);
 		//collider.attachedRigidbody.AddForce (hitForce * impulse, ForceMode.Impulse);
