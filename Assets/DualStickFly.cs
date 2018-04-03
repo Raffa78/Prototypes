@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +7,8 @@ public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 
 	Transform bodyObject;
 	Rigidbody body;
+
+	Transform bodyProxy;
 
 	public Rigidbody HRotBody;
 	public Rigidbody VRotBody;
@@ -47,29 +50,29 @@ public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 		IntegrateCurve ();
 
 		bodyObject = transform.Find ("Body");
-
-		if (bodyObject == null)
-			Debug.LogError ("No object named Body under this");
-
 		body = bodyObject.GetComponent<Rigidbody> ();
+
+		bodyProxy = transform.Find ("BodyProxy");
 
 		eyes = bodyObject.Find ("Eyes");
 
-		if (eyes == null)
-			Debug.LogError ("No object named Eyes under this");
-
 		if (!m_PhotonView.isMine) {
 
-			//GameObject newPlayerObject = PhotonNetwork.Instantiate ("PlayerFeedback", Vector3.zero, Quaternion.identity, 0);
-			//newPlayerObject.AddComponent<FollowTransform> ().target = transform;
+			//our rigidbody replica is moved cinematically via Photon Transform View
 			body.isKinematic = true;
-			//body.isKinematic = true;
+
+			//Disable all mesh renderer children. We don't want to see the other players exact replica, but bodyProxy instead
+			Array.ForEach<MeshRenderer>(bodyObject.GetComponentsInChildren<MeshRenderer> (), x => x.enabled = false);
+			//Disable colliders also. bodyProxy is jointed to replica and it is our physic representation of other players
+			Array.ForEach<Collider>(bodyObject.GetComponentsInChildren<Collider> (), x => x.enabled = false);
+
+			//Disable Camera of other players' replicas
 			eyes.gameObject.SetActive (false);
 
 		} else {
 			print ("net: " + PhotonNetwork.sendRate + " " + PhotonNetwork.sendRateOnSerialize);
 
-
+			Destroy (bodyProxy.gameObject);
 		}
 	}
 	
