@@ -44,10 +44,7 @@ public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 
 	void Start () {
 		profileDuration = forceProfile.keys [forceProfile.length - 1].time;
-		print (profileDuration);
 		IntegrateCurve ();
-
-		print ("joined room");
 
 		bodyObject = transform.Find ("Body");
 
