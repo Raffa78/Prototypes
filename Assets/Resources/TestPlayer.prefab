@@ -20,7 +20,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4214587331407644}
   - component: {fileID: 33526896187277796}
-  - component: {fileID: 64556956328748440}
   - component: {fileID: 23586218801714602}
   m_Layer: 0
   m_Name: Quad
@@ -1078,20 +1077,6 @@ HingeJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
---- !u!64 &64556956328748440
-MeshCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1057368655723844}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 0
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!65 &65028060895169880
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -1277,7 +1262,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerBody: {fileID: 54746579474168192}
-  hitForce: 100
+  hitForce: 300
   hitRecoilForceRatio: 0.2
 --- !u!114 &114644347941978078
 MonoBehaviour:
