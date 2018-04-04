@@ -1269,7 +1269,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -3.01, y: 0, z: 5.25}
+  m_ConnectedAnchor: {x: -3.01, y: 31.3, z: 5.25}
   m_UseSpring: 0
   m_Spring:
     spring: 0
@@ -1605,7 +1605,7 @@ MonoBehaviour:
   eyes: {fileID: 0}
   maxHTorque: 5
   maxVTorque: 5
-  maxForce: 200
+  maxForce: 300
   LeftWing: {fileID: 0}
   RightWing: {fileID: 0}
   forceProfile:
@@ -1801,7 +1801,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0.63, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: 0.63, z: 0}
+  m_ConnectedAnchor: {x: 0, y: 0.62999904, z: 0}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 2
@@ -1861,18 +1861,18 @@ ConfigurableJoint:
   m_RotationDriveMode: 0
   m_AngularXDrive:
     serializedVersion: 3
-    positionSpring: 300
-    positionDamper: 50
+    positionSpring: 500
+    positionDamper: 100
     maximumForce: 3.4028233e+38
   m_AngularYZDrive:
     serializedVersion: 3
-    positionSpring: 300
-    positionDamper: 50
+    positionSpring: 500
+    positionDamper: 100
     maximumForce: 3.4028233e+38
   m_SlerpDrive:
     serializedVersion: 3
-    positionSpring: 300
-    positionDamper: 50
+    positionSpring: 500
+    positionDamper: 100
     maximumForce: 3.4028233e+38
   m_ProjectionMode: 0
   m_ProjectionDistance: 0.1
