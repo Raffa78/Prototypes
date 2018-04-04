@@ -63,11 +63,14 @@ public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 
 			//our rigidbody replica is moved cinematically via Photon Transform View
 			body.isKinematic = true;
+			bodyPuller.gameObject.SetActive (false);
 
 			//Disable all mesh renderer children. We don't want to see the other players exact replica, but bodyProxy instead
 			Array.ForEach<MeshRenderer>(bodyObject.GetComponentsInChildren<MeshRenderer> (), x => x.enabled = false);
 			//Disable colliders also. bodyProxy is jointed to replica and it is our physic representation of other players
 			Array.ForEach<Collider>(bodyObject.GetComponentsInChildren<Collider> (), x => x.enabled = false);
+
+			Array.ForEach<TrailRenderer>(bodyObject.GetComponentsInChildren<TrailRenderer> (), x => x.enabled = false);
 
 			//Disable Camera of other players' replicas
 			eyes.gameObject.SetActive (false);
