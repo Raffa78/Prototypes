@@ -1631,6 +1631,8 @@ MonoBehaviour:
   playerBody: {fileID: 0}
   hitForce: 2000
   hitRecoilForceRatio: 0.2
+  hitClip: {fileID: 8300000, guid: 756d1b0558a9b6f4a8620b11ab2c6241, type: 3}
+  beingHitClip: {fileID: 8300000, guid: 00045fc6a42b46f47a9e0561267a5540, type: 3}
   countToDeath: 3
 --- !u!114 &114248406498220162
 MonoBehaviour:
@@ -1747,6 +1749,8 @@ MonoBehaviour:
   playerBody: {fileID: 54746579474168192}
   hitForce: 300
   hitRecoilForceRatio: 0.2
+  hitClip: {fileID: 8300000, guid: 756d1b0558a9b6f4a8620b11ab2c6241, type: 3}
+  beingHitClip: {fileID: 8300000, guid: 00045fc6a42b46f47a9e0561267a5540, type: 3}
   countToDeath: 3
 --- !u!114 &114898314480234248
 MonoBehaviour:
