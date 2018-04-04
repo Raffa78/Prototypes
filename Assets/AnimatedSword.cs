@@ -69,7 +69,11 @@ public class AnimatedSword : MonoBehaviour {
 
 		print (collider.attachedRigidbody.gameObject.name);
 				
-		photonView.RPC ("SwordHit", PhotonTargets.Others, collider.attachedRigidbody.GetComponent<PhotonView> ().viewID, impulse);
+		if (collider.attachedRigidbody.name != "BodyProxy")
+			return;
+
+		int id = collider.attachedRigidbody.transform.parent.Find ("Body").GetComponent<PhotonView> ().viewID;
+		photonView.RPC ("SwordHit", PhotonTargets.Others, id, impulse);
 		//collider.attachedRigidbody.AddForce (hitForce * impulse, ForceMode.Impulse);
 		//playerBody.AddForce (-hitRecoilForceRatio * hitForce * impulse, ForceMode.Impulse);
 
