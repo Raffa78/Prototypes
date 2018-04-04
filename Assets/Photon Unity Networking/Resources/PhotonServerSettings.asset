@@ -43,4 +43,5 @@ MonoBehaviour:
   - RequestForPickupTimes
   - TaggedPlayer
   - SwordHit
+  - SetSwingTriggerToProxy
   DisableAutoOpenWizard: 1

@@ -44,9 +44,16 @@ public class AnimatedSword : MonoBehaviour {
 				swingAlreadyHit = false;
 				swingInCooldown = true;
 				GetComponentInChildren<Collider> ().enabled = true;
+				PhotonNetwork.RPC (photonView, "SetSwingTriggerToProxy", PhotonTargets.Others, false, null);
 			}
 		}	
 	}
+
+	[PunRPC]
+	void SetSwingTriggerToProxy()
+	{
+		transform.parent.parent.Find ("BodyProxy").GetComponentInChildren<Animator> ().SetTrigger ("Swing");
+	}	
 
 	void OnSwingBack()
 	{
