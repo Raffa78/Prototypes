@@ -80,17 +80,19 @@ public class AnimatedSword : MonoBehaviour {
 		swingAlreadyHit = true;
 	}
 
+
+	int countToDeath = 3;
+
 	[PunRPC]
-	int count = 0;
 	public void SwordHit(int ID, Vector3 impulse)
 	{
 		print ("HIT!");
 		Rigidbody body = PhotonView.Find (ID).GetComponent<Rigidbody>();
 		body.AddForce (hitForce * impulse, ForceMode.Impulse);
 
-		count++;
+		countToDeath--;
 
-		if (count == 3) {
+		if (countToDeath == 0) {
 			PhotonNetwork.Destroy (GetComponentInParent<DualStickFly> ().gameObject);
 			Vector3 position = GameObject.Find("Spawn").transform.position;
 			GameObject newPlayerObject = PhotonNetwork.Instantiate( "TestPlayer", position, Quaternion.identity, 0 );
