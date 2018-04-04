@@ -12,7 +12,7 @@ public class PlayerSpawn : MonoBehaviour {
 	// Use this for initialization
 	void OnJoinedRoom () {
 
-		Vector3 position = new Vector3( Random.value * 33.5f, 0.0f, 3.0f );
+		Vector3 position = GameObject.Find("Spawn").transform.position;
 		GameObject newPlayerObject = PhotonNetwork.Instantiate( "TestPlayer", position, Quaternion.identity, 0 );
 
 		//PhotonNetwork.sendRate = 30;
