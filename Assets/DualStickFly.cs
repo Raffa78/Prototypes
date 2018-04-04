@@ -7,6 +7,7 @@ public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 
 	Transform bodyObject;
 	Rigidbody body;
+	Rigidbody bodyPuller;
 
 	Transform bodyProxy;
 
@@ -54,7 +55,9 @@ public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 
 		bodyProxy = transform.Find ("BodyProxy");
 
-		eyes = bodyObject.Find ("Eyes");
+		eyes = /*transform.Find ("BodyPuller").*/bodyObject.transform.Find ("Eyes");
+
+		bodyPuller = transform.Find ("BodyPuller").GetComponent<Rigidbody> ();
 
 		if (!m_PhotonView.isMine) {
 
@@ -101,7 +104,7 @@ public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 
 		eyes.transform.rotation = HRotBody.transform.rotation * VRotBody.transform.rotation;
 
-		body.rotation = HRotBody.transform.rotation;
+		bodyPuller.rotation = HRotBody.transform.rotation;
 
 
 
@@ -122,7 +125,7 @@ public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 
 	void BasicFlight() {
 		
-		body.AddForce (
+		bodyPuller.AddForce (
 			bodyObject.right * LHorizontal * maxForce
 			+ bodyObject.forward * LVertical * maxForce 
 			+ Vector3.up * RTrigger * maxForce

@@ -190,7 +190,7 @@ Transform:
   m_Father: {fileID: 517804279}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: -90.00001, y: 0, z: 180.00002}
---- !u!1001 &507050896
+--- !u!1001 &212396390
 Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -229,32 +229,32 @@ Prefab:
       propertyPath: m_RootOrder
       value: 8
       objectReference: {fileID: 0}
-    - target: {fileID: 114248406498220162, guid: 5e136cd3bd28b7243b722413d01b5c27,
+    - target: {fileID: 114378400574720542, guid: 5e136cd3bd28b7243b722413d01b5c27,
         type: 2}
       propertyPath: viewIdField
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114248406498220162, guid: 5e136cd3bd28b7243b722413d01b5c27,
-        type: 2}
-      propertyPath: instantiationId
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114335194490751478, guid: 5e136cd3bd28b7243b722413d01b5c27,
-        type: 2}
-      propertyPath: viewIdField
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114335194490751478, guid: 5e136cd3bd28b7243b722413d01b5c27,
-        type: 2}
-      propertyPath: instantiationId
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114378400574720542, guid: 5e136cd3bd28b7243b722413d01b5c27,
+        type: 2}
+      propertyPath: instantiationId
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114335194490751478, guid: 5e136cd3bd28b7243b722413d01b5c27,
+        type: 2}
+      propertyPath: viewIdField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114335194490751478, guid: 5e136cd3bd28b7243b722413d01b5c27,
+        type: 2}
+      propertyPath: instantiationId
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114248406498220162, guid: 5e136cd3bd28b7243b722413d01b5c27,
         type: 2}
       propertyPath: viewIdField
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 114378400574720542, guid: 5e136cd3bd28b7243b722413d01b5c27,
+    - target: {fileID: 114248406498220162, guid: 5e136cd3bd28b7243b722413d01b5c27,
         type: 2}
       propertyPath: instantiationId
       value: 3

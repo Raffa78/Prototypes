@@ -18,6 +18,9 @@ public class AnimatedSword : MonoBehaviour {
 
 		photonView = GetComponent<PhotonView> ();
 
+		if (photonView == null)
+			return;
+
 		if (!photonView.isMine) {
 			enabled = false;
 			return;
