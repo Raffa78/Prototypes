@@ -81,19 +81,19 @@ public class AnimatedSword : MonoBehaviour {
 	}
 
 
-	int countToDeath = 3;
+	public int countToDeath = 3;
 
 	[PunRPC]
 	public void SwordHit(int ID, Vector3 impulse)
 	{
-		print ("HIT!");
 		Rigidbody body = PhotonView.Find (ID).GetComponent<Rigidbody>();
 		body.AddForce (hitForce * impulse, ForceMode.Impulse);
 
-		countToDeath--;
+		body.GetComponentInChildren<AnimatedSword>().countToDeath--;
 
-		if (countToDeath == 0) {
-			PhotonNetwork.Destroy (GetComponentInParent<DualStickFly> ().gameObject);
+		if (body.GetComponentInChildren<AnimatedSword>().countToDeath == 0) 
+		{
+			PhotonNetwork.Destroy (body.GetComponentInParent<DualStickFly> ().gameObject);
 			Vector3 position = GameObject.Find("Spawn").transform.position;
 			GameObject newPlayerObject = PhotonNetwork.Instantiate( "TestPlayer", position, Quaternion.identity, 0 );
 		}
