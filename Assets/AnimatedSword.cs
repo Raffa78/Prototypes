@@ -14,6 +14,9 @@ public class AnimatedSword : MonoBehaviour {
 
 	bool swingInCooldown = false;
 
+	public AudioClip hitClip;
+	public AudioClip beingHitClip;
+
 	void Awake() {
 
 		photonView = GetComponent<PhotonView> ();
@@ -71,10 +74,13 @@ public class AnimatedSword : MonoBehaviour {
 			return;
 		}
 
+		if (collider.attachedRigidbody == null)
+			return;
+
+		AudioSource.PlayClipAtPoint (hitClip, transform.position);
+
 		Vector3 impulse = collider.attachedRigidbody.position - playerBody.position;
 		impulse.Normalize ();
-
-		print (collider.attachedRigidbody.gameObject.name);
 				
 		if (collider.attachedRigidbody.name != "BodyProxy")
 			return;
@@ -95,6 +101,8 @@ public class AnimatedSword : MonoBehaviour {
 	{
 		Rigidbody body = PhotonView.Find (ID).GetComponent<Rigidbody>();
 		body.AddForce (hitForce * impulse, ForceMode.Impulse);
+
+		AudioSource.PlayClipAtPoint (beingHitClip, body.position);
 
 		body.GetComponentInChildren<AnimatedSword>().countToDeath--;
 
