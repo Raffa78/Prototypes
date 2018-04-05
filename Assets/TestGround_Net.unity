@@ -313,32 +313,32 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 114378400574720542, guid: 5e136cd3bd28b7243b722413d01b5c27,
+    - target: {fileID: 114248406498220162, guid: 5e136cd3bd28b7243b722413d01b5c27,
         type: 2}
       propertyPath: viewIdField
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114378400574720542, guid: 5e136cd3bd28b7243b722413d01b5c27,
-        type: 2}
-      propertyPath: instantiationId
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114335194490751478, guid: 5e136cd3bd28b7243b722413d01b5c27,
-        type: 2}
-      propertyPath: viewIdField
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114335194490751478, guid: 5e136cd3bd28b7243b722413d01b5c27,
-        type: 2}
-      propertyPath: instantiationId
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114248406498220162, guid: 5e136cd3bd28b7243b722413d01b5c27,
+        type: 2}
+      propertyPath: instantiationId
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114335194490751478, guid: 5e136cd3bd28b7243b722413d01b5c27,
+        type: 2}
+      propertyPath: viewIdField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114335194490751478, guid: 5e136cd3bd28b7243b722413d01b5c27,
+        type: 2}
+      propertyPath: instantiationId
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114378400574720542, guid: 5e136cd3bd28b7243b722413d01b5c27,
         type: 2}
       propertyPath: viewIdField
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 114248406498220162, guid: 5e136cd3bd28b7243b722413d01b5c27,
+    - target: {fileID: 114378400574720542, guid: 5e136cd3bd28b7243b722413d01b5c27,
         type: 2}
       propertyPath: instantiationId
       value: 3
