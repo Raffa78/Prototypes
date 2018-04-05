@@ -97,12 +97,12 @@ public class AnimatedSword : MonoBehaviour {
 		JointDrive drive = new JointDrive();
 		drive.positionDamper = 0f;
 		drive.positionSpring = 0f;
-		drive.maximumForce = 0f;
+		drive.maximumForce = lastHitJoint.xDrive.maximumForce;
 		lastHitJoint.xDrive = drive;
 		lastHitJoint.yDrive = drive;
 		lastHitJoint.zDrive = drive;
-		lastHitJoint.angularXDrive = drive;
-		lastHitJoint.angularYZDrive = drive;
+		//lastHitJoint.angularXDrive = drive;
+		//lastHitJoint.angularYZDrive = drive;
 
 		StartCoroutine (EnableProxyMotors ());
 
@@ -120,17 +120,20 @@ public class AnimatedSword : MonoBehaviour {
 
 	IEnumerator EnableProxyMotors()
 	{
+		if (lastHitJoint == null)
+			yield break ;
+
 		yield return new WaitForSeconds (2.0f);
 
 		JointDrive drive = new JointDrive();
-		drive.positionDamper = 1000f;
-		drive.positionSpring = 100f;
-		drive.maximumForce = Mathf.Infinity;
+		drive.positionDamper = 100f;
+		drive.positionSpring = 1000f;
+		drive.maximumForce = lastHitJoint.xDrive.maximumForce;
 		lastHitJoint.xDrive = drive;
 		lastHitJoint.yDrive = drive;
 		lastHitJoint.zDrive = drive;
-		lastHitJoint.angularXDrive = drive;
-		lastHitJoint.angularYZDrive = drive;
+		//lastHitJoint.angularXDrive = drive;
+		//lastHitJoint.angularYZDrive = drive;
 	}
 
 
