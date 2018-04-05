@@ -97,6 +97,7 @@ public class AnimatedSword : MonoBehaviour {
 		JointDrive drive = new JointDrive();
 		drive.positionDamper = 0f;
 		drive.positionSpring = 0f;
+		drive.maximumForce = 0f;
 		lastHitJoint.xDrive = drive;
 		lastHitJoint.yDrive = drive;
 		lastHitJoint.zDrive = drive;
@@ -124,6 +125,7 @@ public class AnimatedSword : MonoBehaviour {
 		JointDrive drive = new JointDrive();
 		drive.positionDamper = 1000f;
 		drive.positionSpring = 100f;
+		drive.maximumForce = Mathf.Infinity;
 		lastHitJoint.xDrive = drive;
 		lastHitJoint.yDrive = drive;
 		lastHitJoint.zDrive = drive;
