@@ -1789,7 +1789,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
-  countToDeath: 3
+  countToDeath: 30
 --- !u!114 &114898314480234248
 MonoBehaviour:
   m_ObjectHideFlags: 1
