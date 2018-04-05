@@ -113,6 +113,7 @@ public class AnimatedSword : MonoBehaviour {
 		//collider.attachedRigidbody.AddForce (hitForce * impulse, ForceMode.Impulse);
 		//playerBody.AddForce (-hitRecoilForceRatio * hitForce * impulse, ForceMode.Impulse);
 
+		GetComponentInChildren<Collider>().enabled = false;
 		swingAlreadyHit = true;
 	}
 
