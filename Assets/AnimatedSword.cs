@@ -121,7 +121,7 @@ public class AnimatedSword : MonoBehaviour {
 
 	ConfigurableJoint lastHitJoint;
 
-	float reenableMotorsDuration = 3.0f;
+	float reenableMotorsDuration = 4.0f;
 	float spring = 1000f;
 	float damper = 100f;
 
@@ -145,7 +145,7 @@ public class AnimatedSword : MonoBehaviour {
 			lastHitJoint.zDrive = drive;
 			//lastHitJoint.angularXDrive = drive;
 			//lastHitJoint.angularYZDrive = drive;
-			print(drive.positionSpring + " " + lerpedSpring);
+
 			time += Time.deltaTime;
 			yield return null;
 		}
