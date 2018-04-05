@@ -281,11 +281,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 114427068709417686, guid: 5e136cd3bd28b7243b722413d01b5c27,
-        type: 2}
-      propertyPath: motorCurve.m_Curve.Array.size
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 4897173297187816, guid: 5e136cd3bd28b7243b722413d01b5c27, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -350,67 +345,12 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1268560238696444, guid: 5e136cd3bd28b7243b722413d01b5c27, type: 2}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114427068709417686, guid: 5e136cd3bd28b7243b722413d01b5c27,
         type: 2}
-      propertyPath: motorCurve.m_Curve.Array.data[0].inSlope
-      value: -0.07711435
-      objectReference: {fileID: 0}
-    - target: {fileID: 114427068709417686, guid: 5e136cd3bd28b7243b722413d01b5c27,
-        type: 2}
-      propertyPath: motorCurve.m_Curve.Array.data[0].outSlope
-      value: 0.13933957
-      objectReference: {fileID: 0}
-    - target: {fileID: 114427068709417686, guid: 5e136cd3bd28b7243b722413d01b5c27,
-        type: 2}
-      propertyPath: motorCurve.m_Curve.Array.data[1].inSlope
-      value: 1.1468419
-      objectReference: {fileID: 0}
-    - target: {fileID: 114427068709417686, guid: 5e136cd3bd28b7243b722413d01b5c27,
-        type: 2}
-      propertyPath: motorCurve.m_Curve.Array.data[1].outSlope
-      value: 7.1974277
-      objectReference: {fileID: 0}
-    - target: {fileID: 114427068709417686, guid: 5e136cd3bd28b7243b722413d01b5c27,
-        type: 2}
-      propertyPath: motorCurve.m_Curve.Array.data[1].time
-      value: 0.95851743
-      objectReference: {fileID: 0}
-    - target: {fileID: 114427068709417686, guid: 5e136cd3bd28b7243b722413d01b5c27,
-        type: 2}
-      propertyPath: motorCurve.m_Curve.Array.data[1].value
-      value: 0.2805885
-      objectReference: {fileID: 0}
-    - target: {fileID: 114427068709417686, guid: 5e136cd3bd28b7243b722413d01b5c27,
-        type: 2}
-      propertyPath: motorCurve.m_Curve.Array.data[2].time
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114427068709417686, guid: 5e136cd3bd28b7243b722413d01b5c27,
-        type: 2}
-      propertyPath: motorCurve.m_Curve.Array.data[2].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114427068709417686, guid: 5e136cd3bd28b7243b722413d01b5c27,
-        type: 2}
-      propertyPath: motorCurve.m_Curve.Array.data[2].inSlope
-      value: 48.444424
-      objectReference: {fileID: 0}
-    - target: {fileID: 114427068709417686, guid: 5e136cd3bd28b7243b722413d01b5c27,
-        type: 2}
-      propertyPath: motorCurve.m_Curve.Array.data[2].outSlope
-      value: 48.444424
-      objectReference: {fileID: 0}
-    - target: {fileID: 114427068709417686, guid: 5e136cd3bd28b7243b722413d01b5c27,
-        type: 2}
-      propertyPath: motorCurve.m_Curve.Array.data[1].tangentMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114427068709417686, guid: 5e136cd3bd28b7243b722413d01b5c27,
-        type: 2}
-      propertyPath: motorCurve.m_Curve.Array.data[0].tangentMode
-      value: 1
+      propertyPath: countToDeath
+      value: 30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5e136cd3bd28b7243b722413d01b5c27, type: 2}
