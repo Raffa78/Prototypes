@@ -12,10 +12,12 @@ public class AnimatedSword : MonoBehaviour {
 	public float hitForce;
 	public float hitRecoilForceRatio;
 
-	bool swingInCooldown = false;
+	bool canSwing = true;
 
 	public AudioClip hitClip;
 	public AudioClip beingHitClip;
+
+	public AnimationCurve motorCurve;
 
 	void Awake() {
 
@@ -41,12 +43,12 @@ public class AnimatedSword : MonoBehaviour {
 		
 		if(Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Fire1"))
 		{
-			if(!swingInCooldown)
+			if(canSwing)
 			{
-				animator.SetTrigger ("Swing");	
 				swingAlreadyHit = false;
-				swingInCooldown = true;
+				canSwing = false;
 				GetComponentInChildren<Collider> ().enabled = true;
+				animator.SetTrigger ("Swing");	
 				PhotonNetwork.RPC (photonView, "SetSwingTriggerToProxy", PhotonTargets.Others, false, null);
 			}
 		}	
@@ -65,14 +67,14 @@ public class AnimatedSword : MonoBehaviour {
 
 	void OnIdle()
 	{
-		
+		GetComponentInChildren<Collider>().enabled = false;
 		StartCoroutine (SwingCooldown());
 	}
 
 	IEnumerator SwingCooldown()
 	{
 		yield return new WaitForSeconds (1.8f);
-		swingInCooldown = false;
+		canSwing = true;
 	}
 
 	void OnTriggerEnter(Collider collider)
@@ -95,8 +97,8 @@ public class AnimatedSword : MonoBehaviour {
 		//Disable motors of bodyProxy on big collisions so to have a sort of client prediction
 		lastHitJoint = collider.attachedRigidbody.GetComponent<ConfigurableJoint>();
 		JointDrive drive = new JointDrive();
-		drive.positionDamper = 0f;
 		drive.positionSpring = 0f;
+		drive.positionDamper = 0f;
 		drive.maximumForce = lastHitJoint.xDrive.maximumForce;
 		lastHitJoint.xDrive = drive;
 		lastHitJoint.yDrive = drive;
@@ -119,26 +121,38 @@ public class AnimatedSword : MonoBehaviour {
 
 	ConfigurableJoint lastHitJoint;
 
+	float reenableMotorsDuration = 3.0f;
+	float spring = 1000f;
+	float damper = 100f;
+
 	IEnumerator EnableProxyMotors()
 	{
 		if (lastHitJoint == null)
 			yield break ;
 
-		yield return new WaitForSeconds (2.0f);
-
-		JointDrive drive = new JointDrive();
-		drive.positionDamper = 100f;
-		drive.positionSpring = 1000f;
-		drive.maximumForce = lastHitJoint.xDrive.maximumForce;
-		lastHitJoint.xDrive = drive;
-		lastHitJoint.yDrive = drive;
-		lastHitJoint.zDrive = drive;
-		//lastHitJoint.angularXDrive = drive;
-		//lastHitJoint.angularYZDrive = drive;
+		float time = 0; ;
+		
+		while(time < reenableMotorsDuration)
+		{
+			JointDrive drive = new JointDrive();
+			float lerpedSpring = Mathf.Lerp(0, spring, motorCurve.Evaluate(time / reenableMotorsDuration));
+			float lerpedDamper = Mathf.Lerp(0, damper, motorCurve.Evaluate(time / reenableMotorsDuration));
+			drive.positionSpring = lerpedSpring;
+			drive.positionDamper = lerpedDamper;
+			drive.maximumForce = lastHitJoint.xDrive.maximumForce;
+			lastHitJoint.xDrive = drive;
+			lastHitJoint.yDrive = drive;
+			lastHitJoint.zDrive = drive;
+			//lastHitJoint.angularXDrive = drive;
+			//lastHitJoint.angularYZDrive = drive;
+			print(drive.positionSpring + " " + lerpedSpring);
+			time += Time.deltaTime;
+			yield return null;
+		}
 	}
 
 
-	public int countToDeath = 3;
+	public int countToDeath = 30;
 
 	[PunRPC]
 	public void SwordHit(int ID, Vector3 impulse)

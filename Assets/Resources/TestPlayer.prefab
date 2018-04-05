@@ -1641,6 +1641,12 @@ MonoBehaviour:
   hitRecoilForceRatio: 0.2
   hitClip: {fileID: 8300000, guid: 756d1b0558a9b6f4a8620b11ab2c6241, type: 3}
   beingHitClip: {fileID: 8300000, guid: 00045fc6a42b46f47a9e0561267a5540, type: 3}
+  motorCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   countToDeath: 3
 --- !u!114 &114248406498220162
 MonoBehaviour:
@@ -1664,8 +1670,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 114936429197018136}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 1
+  instantiationId: 1
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &114254514542491200
@@ -1701,8 +1707,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 114898314480234248}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 2
+  instantiationId: 2
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &114375624413936878
@@ -1739,8 +1745,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 114927609068283202}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 3
+  instantiationId: 3
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &114427068709417686
@@ -1759,6 +1765,30 @@ MonoBehaviour:
   hitRecoilForceRatio: 0.2
   hitClip: {fileID: 8300000, guid: 756d1b0558a9b6f4a8620b11ab2c6241, type: 3}
   beingHitClip: {fileID: 8300000, guid: 00045fc6a42b46f47a9e0561267a5540, type: 3}
+  motorCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: -0.07711435
+      outSlope: 0.13933957
+      tangentMode: 1
+    - serializedVersion: 2
+      time: 0.95851743
+      value: 0.2805885
+      inSlope: 1.1468419
+      outSlope: 7.1974277
+      tangentMode: 1
+    - serializedVersion: 2
+      time: 1
+      value: 1
+      inSlope: 48.444424
+      outSlope: 48.444424
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
   countToDeath: 3
 --- !u!114 &114898314480234248
 MonoBehaviour:
