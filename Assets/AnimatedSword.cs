@@ -65,6 +65,13 @@ public class AnimatedSword : MonoBehaviour {
 
 	void OnIdle()
 	{
+		
+		StartCoroutine (SwingCooldown());
+	}
+
+	IEnumerator SwingCooldown()
+	{
+		yield return new WaitForSeconds (1.8f);
 		swingInCooldown = false;
 	}
 
@@ -77,13 +84,15 @@ public class AnimatedSword : MonoBehaviour {
 		if (collider.attachedRigidbody == null)
 			return;
 
+		if (collider.attachedRigidbody.name != "BodyProxy")
+			return;
+		
 		AudioSource.PlayClipAtPoint (hitClip, transform.position);
 
 		Vector3 impulse = collider.attachedRigidbody.position - playerBody.position;
 		impulse.Normalize ();
 				
-		if (collider.attachedRigidbody.name != "BodyProxy")
-			return;
+		collider.attachedRigidbody.AddForce (hitForce * impulse, ForceMode.Impulse);
 
 		int id = collider.attachedRigidbody.transform.parent.Find ("Body").GetComponent<PhotonView> ().viewID;
 		photonView.RPC ("SwordHit", PhotonTargets.Others, id, impulse);
