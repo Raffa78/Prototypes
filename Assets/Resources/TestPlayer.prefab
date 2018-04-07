@@ -2171,8 +2171,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 114936429197018136}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 2
-  instantiationId: 2
+  viewIdField: 0
+  instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &114254514542491200
@@ -2208,8 +2208,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 114898314480234248}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 1
-  instantiationId: 1
+  viewIdField: 0
+  instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &114375624413936878
@@ -2271,8 +2271,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 3
-  instantiationId: 3
+  viewIdField: 0
+  instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &114821833594451058
@@ -2297,8 +2297,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 4
-  instantiationId: 4
+  viewIdField: 0
+  instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &114840135049033924
@@ -2312,7 +2312,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8138a9bd3096e904c856c4917f29b069, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerBody: {fileID: 54581260289020650}
+  playerBody: {fileID: 54746579474168192}
   hitForce: 2000
   hitRecoilForceRatio: 0.2
   hitClip: {fileID: 8300000, guid: 756d1b0558a9b6f4a8620b11ab2c6241, type: 3}
