@@ -19,7 +19,13 @@ public class AnimatedSword : MonoBehaviour {
 
 	public AnimationCurve motorCurve;
 
+	public TrailRenderer swordTrail;
+
+	public GameObject hitPrefab;
+
 	void Awake() {
+
+		swordTrail.enabled = false;
 
 		photonView = GetComponent<PhotonView> ();
 
@@ -33,6 +39,7 @@ public class AnimatedSword : MonoBehaviour {
 		
 		animator = GetComponent<Animator> ();
 
+		animator.GetBehaviour<SwordSMB> ().onSwing.AddListener(OnSwing);
 		animator.GetBehaviour<SwordSMB> ().onIdle.AddListener (OnIdle);
 		animator.GetBehaviour<SwordSMB> ().onSwingBack.AddListener (OnSwingBack);
 
@@ -40,8 +47,11 @@ public class AnimatedSword : MonoBehaviour {
 	}
 
 	void Update () {
-		
-		if(Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Fire1"))
+
+		if (transform.parent.parent.parent.name == "BodyProxy")
+			return;
+
+		if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Fire1"))
 		{
 			if(canSwing)
 			{
@@ -57,8 +67,13 @@ public class AnimatedSword : MonoBehaviour {
 	[PunRPC]
 	void SetSwingTriggerToProxy()
 	{
-		transform.parent.parent.Find ("BodyProxy").GetComponentInChildren<Animator> ().SetTrigger ("Swing");
+		transform.parent.parent.parent.Find ("BodyProxy").GetComponentInChildren<Animator> ().SetTrigger ("Swing");
 	}	
+
+	void OnSwing()
+	{
+		swordTrail.enabled = true;
+	}
 
 	void OnSwingBack()
 	{
@@ -67,6 +82,7 @@ public class AnimatedSword : MonoBehaviour {
 
 	void OnIdle()
 	{
+		swordTrail.enabled = false;
 		GetComponentInChildren<Collider>().enabled = false;
 		StartCoroutine (SwingCooldown());
 	}
@@ -90,6 +106,7 @@ public class AnimatedSword : MonoBehaviour {
 			return;
 		
 		AudioSource.PlayClipAtPoint (hitClip, transform.position);
+		Instantiate(hitPrefab, collider.attachedRigidbody.position, Quaternion.identity);
 
 		Vector3 impulse = collider.attachedRigidbody.position - playerBody.position;
 		impulse.Normalize ();
@@ -161,6 +178,7 @@ public class AnimatedSword : MonoBehaviour {
 		body.AddForce (hitForce * impulse, ForceMode.Impulse);
 
 		AudioSource.PlayClipAtPoint (beingHitClip, body.position);
+		Instantiate(hitPrefab, body.position, Quaternion.identity);
 
 		body.GetComponentInChildren<AnimatedSword>().countToDeath--;
 
