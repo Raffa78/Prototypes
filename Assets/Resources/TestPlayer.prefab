@@ -3665,10 +3665,22 @@ MonoBehaviour:
   beingHitClip: {fileID: 8300000, guid: 00045fc6a42b46f47a9e0561267a5540, type: 3}
   motorCurve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   swordTrail: {fileID: 96830694633103824}
   hitPrefab: {fileID: 100004, guid: f95ff734540a0d749be6571b6cb5b37f, type: 2}
   collidersForHit: {fileID: 0}
@@ -3743,10 +3755,22 @@ MonoBehaviour:
   beingHitClip: {fileID: 8300000, guid: 00045fc6a42b46f47a9e0561267a5540, type: 3}
   motorCurve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   swordTrail: {fileID: 96023532308069724}
   hitPrefab: {fileID: 100004, guid: f95ff734540a0d749be6571b6cb5b37f, type: 2}
   collidersForHit: {fileID: 1318461185928240}
