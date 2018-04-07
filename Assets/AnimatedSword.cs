@@ -108,6 +108,7 @@ public class AnimatedSword : MonoBehaviour {
 		AudioSource.PlayClipAtPoint (hitClip, transform.position);
 		Instantiate(hitPrefab, collider.attachedRigidbody.position, Quaternion.identity);
 
+		print("entered");
 		Vector3 impulse = collider.attachedRigidbody.position - playerBody.position;
 		impulse.Normalize ();
 				

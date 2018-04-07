@@ -2312,7 +2312,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8138a9bd3096e904c856c4917f29b069, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerBody: {fileID: 54581260289020650}
+  playerBody: {fileID: 54746579474168192}
   hitForce: 2000
   hitRecoilForceRatio: 0.2
   hitClip: {fileID: 8300000, guid: 756d1b0558a9b6f4a8620b11ab2c6241, type: 3}
