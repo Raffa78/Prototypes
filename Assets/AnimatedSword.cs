@@ -23,6 +23,8 @@ public class AnimatedSword : MonoBehaviour {
 
 	public GameObject hitPrefab;
 
+	public GameObject collidersForHit;
+
 	void Awake() {
 
 		swordTrail.enabled = false;
@@ -43,7 +45,8 @@ public class AnimatedSword : MonoBehaviour {
 		animator.GetBehaviour<SwordSMB> ().onIdle.AddListener (OnIdle);
 		animator.GetBehaviour<SwordSMB> ().onSwingBack.AddListener (OnSwingBack);
 
-		GetComponentInChildren<Collider> ().enabled = false;
+		if (collidersForHit != null)
+			collidersForHit.SetActive(false);
 	}
 
 	void Update () {
@@ -57,7 +60,10 @@ public class AnimatedSword : MonoBehaviour {
 			{
 				swingAlreadyHit = false;
 				canSwing = false;
-				GetComponentInChildren<Collider> ().enabled = true;
+
+				if (collidersForHit != null)
+					collidersForHit.SetActive(true);
+
 				animator.SetTrigger ("Swing");	
 				PhotonNetwork.RPC (photonView, "SetSwingTriggerToProxy", PhotonTargets.Others, false, null);
 			}
@@ -77,13 +83,15 @@ public class AnimatedSword : MonoBehaviour {
 
 	void OnSwingBack()
 	{
-		GetComponentInChildren<Collider> ().enabled = false;
+		if (collidersForHit != null)
+			collidersForHit.SetActive(false);
 	}
 
 	void OnIdle()
 	{
 		swordTrail.enabled = false;
-		GetComponentInChildren<Collider>().enabled = false;
+		if (collidersForHit != null)
+			collidersForHit.SetActive(false);
 		StartCoroutine (SwingCooldown());
 	}
 
@@ -133,7 +141,9 @@ public class AnimatedSword : MonoBehaviour {
 		//collider.attachedRigidbody.AddForce (hitForce * impulse, ForceMode.Impulse);
 		//playerBody.AddForce (-hitRecoilForceRatio * hitForce * impulse, ForceMode.Impulse);
 
-		GetComponentInChildren<Collider>().enabled = false;
+		if (collidersForHit != null)
+			collidersForHit.SetActive(false);
+
 		swingAlreadyHit = true;
 	}
 
