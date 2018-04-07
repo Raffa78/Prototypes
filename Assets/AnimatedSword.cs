@@ -73,7 +73,7 @@ public class AnimatedSword : MonoBehaviour {
 	[PunRPC]
 	void SetSwingTriggerToProxy()
 	{
-		transform.parent.parent.parent.Find ("BodyProxy").GetComponentInChildren<Animator> ().SetTrigger ("Swing");
+		transform.parent.parent.parent.parent.Find ("BodyProxy").GetComponentInChildren<Animator> ().SetTrigger ("Swing");
 	}	
 
 	void OnSwing()
