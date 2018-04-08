@@ -86,7 +86,14 @@ public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 	void Update () {
 
 		if (!m_PhotonView.isMine)
+		{
+			if(Input.GetKeyDown(KeyCode.Space))
+			{
+				Array.ForEach<MeshRenderer>(
+					bodyObject.GetComponentsInChildren<MeshRenderer>(), x => x.enabled = !x.enabled);
+			}
 			return;
+		}
 		
 		RHorizontal = Input.GetAxis ("RHorizontal");
 		RVertical = Input.GetAxis ("RVertical");
