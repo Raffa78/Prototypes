@@ -95,6 +95,7 @@ public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 			return;
 		}
 		
+		/*
 		RHorizontal = Input.GetAxis ("RHorizontal");
 		RVertical = Input.GetAxis ("RVertical");
 		LHorizontal = Input.GetAxis ("LHorizontal");
@@ -110,7 +111,7 @@ public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 			LVertical = 1;
 		if (Input.GetKey (KeyCode.S))
 			LVertical = -1;
-			
+			*/
 
 		eyes.transform.rotation = HRotBody.transform.rotation * VRotBody.transform.rotation;
 
@@ -134,13 +135,25 @@ public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 	}
 
 	void BasicFlight() {
-		
-		bodyPuller.AddForce (
-			bodyObject.right * LHorizontal * maxForce
-			+ bodyObject.forward * LVertical * maxForce 
-			+ Vector3.up * RTrigger * maxForce
-			- Vector3.up * LTrigger * maxForce
-		);
+		if(photonView.isMine)
+		{
+
+			bodyPuller.AddForce (
+				bodyObject.right * LHorizontal * maxForce
+				+ bodyObject.forward * LVertical * maxForce 
+				+ Vector3.up * RTrigger * maxForce
+				- Vector3.up * LTrigger * maxForce
+			);
+		}
+		else
+		{
+			bodyProxy.GetComponent<Rigidbody>().AddForce(
+				bodyObject.right * LHorizontal * maxForce
+				+ bodyObject.forward * LVertical * maxForce
+				+ Vector3.up * RTrigger * maxForce
+				- Vector3.up * LTrigger * maxForce
+			);
+		}
 	}
 
 
@@ -234,7 +247,6 @@ public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 
 	public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
 	{
-		return;
 
 		if (stream.isWriting) {
 
