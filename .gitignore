@@ -1,7 +1,10 @@
 Assets/ParrotTester/
+Builds/HTML5/
 Library/
 Temp/
 *.csproj
 *.sln
+*.zip
+*.suo
 obj/
 
