@@ -44,4 +44,5 @@ MonoBehaviour:
   - TaggedPlayer
   - SwordHit
   - SetSwingTriggerToProxy
+  - HitRoundTrip
   DisableAutoOpenWizard: 1
