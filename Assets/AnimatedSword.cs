@@ -25,6 +25,8 @@ public class AnimatedSword : MonoBehaviour {
 
 	public GameObject collidersForHit;
 
+	float hitTime;
+
 	void Awake() {
 
 		swordTrail.enabled = false;
@@ -145,6 +147,8 @@ public class AnimatedSword : MonoBehaviour {
 			collidersForHit.SetActive(false);
 
 		swingAlreadyHit = true;
+
+		hitTime = Time.time;
 	}
 
 	ConfigurableJoint lastHitJoint;
@@ -152,6 +156,8 @@ public class AnimatedSword : MonoBehaviour {
 	float reenableMotorsDuration = 4.0f;
 	float spring = 1000f;
 	float damper = 100f;
+
+	
 
 	IEnumerator EnableProxyMotors()
 	{
@@ -199,6 +205,14 @@ public class AnimatedSword : MonoBehaviour {
 			Vector3 position = GameObject.Find("Spawn").transform.position;
 			GameObject newPlayerObject = PhotonNetwork.Instantiate( "TestPlayer", position, Quaternion.identity, 0 );
 		}
+
+		PhotonNetwork.RPC(photonView, "HitRoundTrip", PhotonTargets.Others, false, null);
+	}
+
+	[PunRPC]
+	public void HitRoundTrip()
+	{
+		print("Round Trip = " + (Time.time - hitTime) + " s");
 	}
 
 	void FixedUpdate()
