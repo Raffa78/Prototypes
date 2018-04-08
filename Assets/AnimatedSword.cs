@@ -27,6 +27,12 @@ public class AnimatedSword : MonoBehaviour {
 
 	float hitTime;
 
+	ConfigurableJoint lastHitJoint;
+
+	float reenableMotorsDuration = 4.0f;
+	float spring = 0f;//1000f;
+	float damper = 0f;//100f;
+
 	void Awake() {
 
 		swordTrail.enabled = false;
@@ -46,6 +52,18 @@ public class AnimatedSword : MonoBehaviour {
 		animator.GetBehaviour<SwordSMB> ().onSwing.AddListener(OnSwing);
 		animator.GetBehaviour<SwordSMB> ().onIdle.AddListener (OnIdle);
 		animator.GetBehaviour<SwordSMB> ().onSwingBack.AddListener (OnSwingBack);
+
+		if (transform.parent.parent.parent.name == "BodyProxy")
+		{
+			ConfigurableJoint joint = transform.parent.parent.parent.GetComponent<ConfigurableJoint>();
+			JointDrive drive = new JointDrive();
+			drive.positionSpring = spring;
+			drive.positionDamper = damper;
+			drive.maximumForce = joint.xDrive.maximumForce;
+			joint.xDrive = drive;
+			joint.yDrive = drive;
+			joint.zDrive = drive;
+		}
 
 		if (collidersForHit != null)
 			collidersForHit.SetActive(false);
@@ -151,11 +169,7 @@ public class AnimatedSword : MonoBehaviour {
 		hitTime = Time.time;
 	}
 
-	ConfigurableJoint lastHitJoint;
-
-	float reenableMotorsDuration = 4.0f;
-	float spring = 1000f;
-	float damper = 100f;
+	
 
 	
 
