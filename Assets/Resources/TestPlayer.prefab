@@ -3809,8 +3809,6 @@ MonoBehaviour:
   swordTrail: {fileID: 96830694633103824}
   hitPrefab: {fileID: 100004, guid: f95ff734540a0d749be6571b6cb5b37f, type: 2}
   collidersForHit: {fileID: 0}
-  spring: 0
-  damper: 0
   countToDeath: 10
 --- !u!114 &114501738179073174
 MonoBehaviour:
@@ -3934,8 +3932,6 @@ MonoBehaviour:
   swordTrail: {fileID: 96023532308069724}
   hitPrefab: {fileID: 100004, guid: f95ff734540a0d749be6571b6cb5b37f, type: 2}
   collidersForHit: {fileID: 1318461185928240}
-  spring: 0
-  damper: 0
   countToDeath: 10
 --- !u!114 &114898314480234248
 MonoBehaviour:

@@ -30,10 +30,10 @@ public class AnimatedSword : MonoBehaviour {
 	ConfigurableJoint lastHitJoint;
 
 	float reenableMotorsDuration = 4.0f;
-	public float spring = 20f;//1000f;
-	public float damper = 1f;//100f;
+	float spring = 20f;//1000f;
+	float damper = 1f;//100f;
 
-	void Awake() {
+	void Start() {
 
 		swordTrail.enabled = false;
 
@@ -51,28 +51,22 @@ public class AnimatedSword : MonoBehaviour {
 			animator.GetBehaviour<SwordSMB>().onSwingBack.AddListener(OnSwingBack);
 
 		}
-		else
-		{
-			if (transform.parent.parent.parent.name == "BodyProxy")
-			{
-				ConfigurableJoint joint = transform.parent.parent.parent.GetComponent<ConfigurableJoint>();
-				JointDrive drive = new JointDrive();
-				drive.positionSpring = spring;
-				drive.positionDamper = damper;
-				drive.maximumForce = joint.xDrive.maximumForce;
-				joint.xDrive = drive;
-				joint.yDrive = drive;
-				joint.zDrive = drive;
-
-				enabled = false;
-			}
-		}
-		
-		
 		
 	}
 
 	void Update () {
+
+		if (transform.parent.parent.parent.name == "BodyProxy")
+		{
+			ConfigurableJoint joint = transform.parent.parent.parent.GetComponent<ConfigurableJoint>();
+			JointDrive drive = new JointDrive();
+			drive.positionSpring = spring;
+			drive.positionDamper = damper;
+			drive.maximumForce = joint.xDrive.maximumForce;
+			joint.xDrive = drive;
+			joint.yDrive = drive;
+			joint.zDrive = drive;
+		}
 
 		if (!photonView.isMine)
 			return;
