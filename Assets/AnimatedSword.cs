@@ -140,6 +140,7 @@ public class AnimatedSword : MonoBehaviour {
 		Vector3 impulse = collider.attachedRigidbody.position - playerBody.position;
 		impulse.Normalize ();
 				
+		/*
 		//Disable motors of bodyProxy on big collisions so to have a sort of client prediction
 		lastHitJoint = collider.attachedRigidbody.GetComponent<ConfigurableJoint>();
 		JointDrive drive = new JointDrive();
@@ -153,7 +154,7 @@ public class AnimatedSword : MonoBehaviour {
 		//lastHitJoint.angularYZDrive = drive;
 
 		StartCoroutine (EnableProxyMotors ());
-
+		*/
 		collider.attachedRigidbody.AddForce (hitForce * impulse, ForceMode.Impulse);
 
 		int id = collider.attachedRigidbody.transform.parent.Find ("Body").GetComponent<PhotonView> ().viewID;
