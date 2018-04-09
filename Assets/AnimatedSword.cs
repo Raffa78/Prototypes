@@ -39,40 +39,49 @@ public class AnimatedSword : MonoBehaviour {
 
 		photonView = GetComponent<PhotonView> ();
 
-		if (photonView == null)
-			return;
+		animator = GetComponent<Animator>();
 
-		if (!photonView.isMine) {
-			enabled = false;
-			return;
+		if(collidersForHit != null)
+			collidersForHit.SetActive(false);
+
+		if (photonView.isMine)
+		{
+			animator.GetBehaviour<SwordSMB>().onSwing.AddListener(OnSwing);
+			animator.GetBehaviour<SwordSMB>().onIdle.AddListener(OnIdle);
+			animator.GetBehaviour<SwordSMB>().onSwingBack.AddListener(OnSwingBack);
+
+		}
+		else
+		{
+			if (transform.parent.parent.parent.name == "BodyProxy")
+			{
+				ConfigurableJoint joint = transform.parent.parent.parent.GetComponent<ConfigurableJoint>();
+				JointDrive drive = new JointDrive();
+				drive.positionSpring = spring;
+				drive.positionDamper = damper;
+				drive.maximumForce = joint.xDrive.maximumForce;
+				joint.xDrive = drive;
+				joint.yDrive = drive;
+				joint.zDrive = drive;
+
+				enabled = false;
+			}
 		}
 		
-		animator = GetComponent<Animator> ();
-
-		animator.GetBehaviour<SwordSMB> ().onSwing.AddListener(OnSwing);
-		animator.GetBehaviour<SwordSMB> ().onIdle.AddListener (OnIdle);
-		animator.GetBehaviour<SwordSMB> ().onSwingBack.AddListener (OnSwingBack);
-
-		if (transform.parent.parent.parent.name == "BodyProxy")
-		{
-			ConfigurableJoint joint = transform.parent.parent.parent.GetComponent<ConfigurableJoint>();
-			JointDrive drive = new JointDrive();
-			drive.positionSpring = spring;
-			drive.positionDamper = damper;
-			drive.maximumForce = joint.xDrive.maximumForce;
-			joint.xDrive = drive;
-			joint.yDrive = drive;
-			joint.zDrive = drive;
-		}
-
-		if (collidersForHit != null)
-			collidersForHit.SetActive(false);
+		
+		
 	}
 
 	void Update () {
 
-		if (transform.parent.parent.parent.name == "BodyProxy")
+		if (!photonView.isMine)
 			return;
+
+		//BodyProxy should have been destroyed by DualStickFly
+		if (transform.parent.parent.parent.name == "BodyProxy")
+		{
+			return;
+		}
 
 		if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Fire1"))
 		{
