@@ -81,6 +81,15 @@ public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 			Destroy (bodyProxy.gameObject);
 		}
 	}
+
+	void OnPhotonInstantiate(PhotonMessageInfo info)
+	{
+		Rigidbody rb = transform.Find("BodyProxy").GetComponent<Rigidbody>();
+		rb.isKinematic = true;
+		rb.position = transform.Find("Body").position;
+		rb.rotation = transform.Find("Body").rotation;
+		rb.isKinematic = false;
+	}
 	
 	// Update is called once per frame
 	void Update () {
@@ -124,26 +133,18 @@ public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 
 	void FixedUpdate() {
 
-		if (!m_PhotonView.isMine)
-			return;
-		
-		HRotBody.AddRelativeTorque (Vector3.up * RHorizontal * maxHTorque);
-		VRotBody.AddRelativeTorque (Vector3.right * RVertical * maxVTorque);
-
-		BasicFlight ();
-		//IcarusFlight ();
-	}
-
-	void BasicFlight() {
-		if(photonView.isMine)
+		if (photonView.isMine)
 		{
 
-			bodyPuller.AddForce (
+			bodyPuller.AddForce(
 				bodyObject.right * LHorizontal * maxForce
-				+ bodyObject.forward * LVertical * maxForce 
+				+ bodyObject.forward * LVertical * maxForce
 				+ Vector3.up * RTrigger * maxForce
 				- Vector3.up * LTrigger * maxForce
 			);
+
+			HRotBody.AddRelativeTorque(Vector3.up * RHorizontal * maxHTorque);
+			VRotBody.AddRelativeTorque(Vector3.right * RVertical * maxVTorque);
 		}
 		else
 		{
@@ -153,9 +154,12 @@ public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 				+ Vector3.up * RTrigger * maxForce
 				- Vector3.up * LTrigger * maxForce
 			);
-		}
+		}	
+		
+		
+		//IcarusFlight ();
 	}
-
+	
 
 	void IcarusFlight() {
 
