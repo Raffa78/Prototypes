@@ -46,7 +46,7 @@ public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 		m_PhotonView = GetComponent<PhotonView>();
 	}
 
-	void Start () {
+	IEnumerator Start () {
 		profileDuration = forceProfile.keys [forceProfile.length - 1].time;
 		IntegrateCurve ();
 
@@ -60,6 +60,8 @@ public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 		bodyPuller = transform.Find ("BodyPuller").GetComponent<Rigidbody> ();
 
 		if (!m_PhotonView.isMine) {
+
+			
 
 			//our rigidbody replica is moved cinematically via Photon Transform View
 			body.isKinematic = true;
@@ -75,20 +77,28 @@ public class DualStickFly : Photon.MonoBehaviour, IPunObservable {
 			//Disable Camera of other players' replicas
 			eyes.gameObject.SetActive (false);
 
+			yield return new WaitForSeconds(0.5f);
+
+			Rigidbody rb = transform.Find("BodyProxy").GetComponent<Rigidbody>();
+			rb.isKinematic = true;
+			rb.position = transform.Find("Body").position;
+			rb.rotation = transform.Find("Body").rotation;
+			rb.isKinematic = false;
+
+			
+
 		} else {
 			print ("net: " + PhotonNetwork.sendRate + " " + PhotonNetwork.sendRateOnSerialize);
 
 			Destroy (bodyProxy.gameObject);
 		}
+
+		yield break;
 	}
 
 	void OnPhotonInstantiate(PhotonMessageInfo info)
 	{
-		Rigidbody rb = transform.Find("BodyProxy").GetComponent<Rigidbody>();
-		rb.isKinematic = true;
-		rb.position = transform.Find("Body").position;
-		rb.rotation = transform.Find("Body").rotation;
-		rb.isKinematic = false;
+		
 	}
 	
 	// Update is called once per frame
