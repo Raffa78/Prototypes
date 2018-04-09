@@ -30,8 +30,8 @@ public class AnimatedSword : MonoBehaviour {
 	ConfigurableJoint lastHitJoint;
 
 	float reenableMotorsDuration = 4.0f;
-	public float spring = 0f;//1000f;
-	public float damper = 0f;//100f;
+	public float spring = 20f;//1000f;
+	public float damper = 1f;//100f;
 
 	void Awake() {
 
