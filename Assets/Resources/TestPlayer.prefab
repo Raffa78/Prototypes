@@ -3778,7 +3778,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1852091822733502}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8138a9bd3096e904c856c4917f29b069, type: 3}
   m_Name: 
@@ -3809,6 +3809,8 @@ MonoBehaviour:
   swordTrail: {fileID: 96830694633103824}
   hitPrefab: {fileID: 100004, guid: f95ff734540a0d749be6571b6cb5b37f, type: 2}
   collidersForHit: {fileID: 0}
+  spring: 0
+  damper: 0
   countToDeath: 10
 --- !u!114 &114501738179073174
 MonoBehaviour:
@@ -3932,6 +3934,8 @@ MonoBehaviour:
   swordTrail: {fileID: 96023532308069724}
   hitPrefab: {fileID: 100004, guid: f95ff734540a0d749be6571b6cb5b37f, type: 2}
   collidersForHit: {fileID: 1318461185928240}
+  spring: 0
+  damper: 0
   countToDeath: 10
 --- !u!114 &114898314480234248
 MonoBehaviour:
