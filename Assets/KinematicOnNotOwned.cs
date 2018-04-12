@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DeactivateIfNotOwned : MonoBehaviour {
+public class KinematicOnNotOwned : MonoBehaviour {
 
 	PhotonView photonView;
 
 	// Use this for initialization
 	void Start () {
-		photonView = GetComponent<PhotonView> ();
+		photonView = GetComponent<PhotonView>();
 
 		if (!photonView.isMine)
-			gameObject.SetActive (false);
+			GetComponent<Rigidbody>().isKinematic = true;
 	}
+	
 }
