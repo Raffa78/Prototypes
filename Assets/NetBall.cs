@@ -21,11 +21,9 @@ public class NetBall : MonoBehaviour {
 				{
 					joint.connectedBody = GetComponent<Rigidbody>();
 				}
+
+				Destroy(GetComponent<ConfigurableJoint>());
 			}
 		}
-		else
-		{
-			Destroy(GetComponent<ConfigurableJoint>());
-		}	
 	}
 }
