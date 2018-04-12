@@ -483,7 +483,8 @@ GameObject:
   - component: {fileID: 4079523630076164}
   - component: {fileID: 54591163140512282}
   - component: {fileID: 153997475690974410}
-  - component: {fileID: 114089906478625992}
+  - component: {fileID: 114461429373191658}
+  - component: {fileID: 114236247097574368}
   m_Layer: 0
   m_Name: BallProxy
   m_TagString: Untagged
@@ -3877,17 +3878,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 0000
---- !u!114 &114089906478625992
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1409038622815206}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 847eb81e4ecf0a740b4ddd58721f9d95, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114198268857941824
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3908,6 +3898,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e42071b4f5221664a87deddb57617094, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114236247097574368
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1409038622815206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 008cfb4700d571e4284f3641b8b7e5fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &114248406498220162
@@ -4087,6 +4088,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 722b9e97358bf334ea518f97754698d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114461429373191658
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1409038622815206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 0
+  instantiationId: -1
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!114 &114469332770665526
 MonoBehaviour:
   m_ObjectHideFlags: 1
