@@ -41,10 +41,17 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 	bool aiming;
 	float throwAngleIncRate = 40.0f * Mathf.Deg2Rad;
 
+	float mouseSens = 3.0f;
+	float VLookMaxAngle;
+	float VLookMinAngle;
+
 	// Use this for initialization
 	void Awake() {
 		
 		m_PhotonView = GetComponent<PhotonView>();
+
+		VLookMaxAngle = VRotBody.GetComponent<HingeJoint>().limits.max;
+		VLookMinAngle = VRotBody.GetComponent<HingeJoint>().limits.min;
 	}
 
 	IEnumerator Start () {
@@ -109,24 +116,26 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 		
 		if(localInput)
 		{
-			RHorizontal = Input.GetAxis ("RHorizontal");
-			RVertical = Input.GetAxis ("RVertical");
-			LHorizontal = Input.GetAxis ("LHorizontal");
-			LVertical = Input.GetAxis ("LVertical");
-			RTrigger = Input.GetAxis ("RTrigger");
-			LTrigger = Input.GetAxis ("LTrigger");
-
-			if (Input.GetKey (KeyCode.A))
-				LHorizontal = -1;
-			if (Input.GetKey (KeyCode.D))
-				LHorizontal = 1;
-			if (Input.GetKey (KeyCode.W))
-				LVertical = 1;
-			if (Input.GetKey (KeyCode.S))
-				LVertical = -1;
-
+			GetInputs();
 		}
-			
+
+		float mouseX = mouseSens * Input.GetAxis("Mouse X");
+		float mouseY = -mouseSens * Input.GetAxis("Mouse Y");
+
+		HRotBody.transform.Rotate(0, mouseX, 0);
+		VRotBody.transform.Rotate(mouseY, 0, 0);
+
+		Vector3 euler = VRotBody.transform.eulerAngles;
+
+		float vAngle = euler.x;
+		if(vAngle > 180.0f)
+		{
+			vAngle -= 360.0f;
+		}
+
+		euler.x = Mathf.Clamp(vAngle, VLookMinAngle, VLookMaxAngle);
+
+		VRotBody.transform.eulerAngles = euler;
 
 		eyes.transform.rotation = HRotBody.transform.rotation * VRotBody.transform.rotation;
 
@@ -220,12 +229,9 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 
 		if (stream.isWriting) {
 
-			RHorizontal = Input.GetAxis ("RHorizontal");
-			RVertical = Input.GetAxis ("RVertical");
-			LHorizontal = Input.GetAxis ("LHorizontal");
-			LVertical = Input.GetAxis ("LVertical");
-			RTrigger = Input.GetAxis ("RTrigger");
-			LTrigger = Input.GetAxis ("LTrigger");
+			localInput = false;
+
+			GetInputs();
 
 			stream.SendNext (RHorizontal);
 			stream.SendNext (RVertical);
@@ -243,5 +249,24 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 			RTrigger = (float)stream.ReceiveNext ();
 			LTrigger = (float)stream.ReceiveNext ();
 		}
+	}
+
+	void GetInputs()
+	{
+		RHorizontal = Input.GetAxis("RHorizontal");
+		RVertical = Input.GetAxis("RVertical");
+		LHorizontal = Input.GetAxis("LHorizontal");
+		LVertical = Input.GetAxis("LVertical");
+		RTrigger = Input.GetAxis("RTrigger");
+		LTrigger = Input.GetAxis("LTrigger");
+
+		if (Input.GetKey(KeyCode.A))
+			LHorizontal = -1;
+		if (Input.GetKey(KeyCode.D))
+			LHorizontal = 1;
+		if (Input.GetKey(KeyCode.W))
+			LVertical = 1;
+		if (Input.GetKey(KeyCode.S))
+			LVertical = -1;
 	}
 }
