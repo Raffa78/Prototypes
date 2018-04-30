@@ -14,11 +14,20 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 	public Rigidbody VRotBody;
 	public Transform eyes;
 	public GameObject targetObj;
+	public Transform groundCheck;
 
 	public float maxHTorque = 1.0f;
 	public float maxVTorque = 1.0f;
 
-	public float maxForce = 1.0f;
+	float maxForce = 300.0f;
+	float maxRightForce = 600.0f;
+	float trainSpeed = 35.0f;
+	float stopDrag = 6.0f;
+	float runninDrag = 2.0f;
+
+	float jumpForce = 200.0f;
+
+	float gravityScale = 3.0f;
 
 	public bool localInput = true;
 
@@ -28,13 +37,15 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 	float LVertical;
 	float RTrigger;
 	float LTrigger;
+	bool sprint;
+	float sprintBoost = 3.0f;
 
 	PhotonView m_PhotonView;
 
 	public Transform ballSocket;
 
-	public float speed = 50.0f;
-
+	public float ballSpeed = 50.0f;
+	
 	float startThrowAngle = 10.0f * Mathf.Deg2Rad;
 	float maxThrowAngle = 50.0f * Mathf.Deg2Rad;
 	float throwAngle;
@@ -44,6 +55,8 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 	float mouseSens = 3.0f;
 	float VLookMaxAngle;
 	float VLookMinAngle;
+
+	bool grounded;
 
 	// Use this for initialization
 	void Awake() {
@@ -55,6 +68,9 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 	}
 
 	IEnumerator Start () {
+
+		Cursor.lockState = CursorLockMode.Locked;
+		Cursor.visible = false;
 
 		bodyObject = transform.Find ("Body");
 		body = bodyObject.GetComponent<Rigidbody> ();
@@ -90,6 +106,8 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 			print ("net: " + PhotonNetwork.sendRate + " " + PhotonNetwork.sendRateOnSerialize);
 
 			Destroy (bodyProxy.gameObject);
+
+			Physics.gravity *= gravityScale;
 		}
 
 		yield break;
@@ -101,22 +119,45 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 		
 	}
 	
-	// Update is called once per frame
 	void Update () {
 
 		if (!m_PhotonView.isMine)
 		{
-			if(Input.GetKeyDown(KeyCode.Space))
+			if(Input.GetKeyDown(KeyCode.M))
 			{
 				Array.ForEach<MeshRenderer>(
 					bodyObject.GetComponentsInChildren<MeshRenderer>(), a => a.enabled = !a.enabled);
 			}
 			return;
 		}
-		
-		if(localInput)
+
+		//Ground Check for jumping
+		RaycastHit hit;
+
+		grounded = Physics.Raycast(body.transform.position, -Vector3.up, out hit, (body.transform.position - groundCheck.position).magnitude);
+
+		if (Input.GetKeyDown(KeyCode.Space) && grounded)
+		{
+			body.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+		}
+
+		if (localInput)
 		{
 			GetInputs();
+		}
+
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			if (Cursor.visible)
+			{
+				Cursor.lockState = CursorLockMode.Locked;
+				Cursor.visible = false;
+			}
+			else
+			{
+				Cursor.lockState = CursorLockMode.None;
+				Cursor.visible = true;
+			}
 		}
 
 		float mouseX = mouseSens * Input.GetAxis("Mouse X");
@@ -140,8 +181,7 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 		eyes.transform.rotation = HRotBody.transform.rotation * VRotBody.transform.rotation;
 
 		body.rotation = HRotBody.transform.rotation;
-
-		RaycastHit hit;
+		
 		Physics.Raycast(eyes.transform.position, eyes.transform.forward, out hit);
 
 		targetObj.transform.position = hit.point;
@@ -169,8 +209,8 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 				Vector3 ballToTargetProj = plane.ClosestPointOnPlane(ballToTarget);
 				float x = ballToTargetProj.magnitude;
 
-				float delta = Mathf.Pow(speed, 4) -
-					Physics.gravity.magnitude * (Physics.gravity.magnitude * x * x + 2 * y * speed * speed);
+				float delta = Mathf.Pow(ballSpeed, 4) -
+					Physics.gravity.magnitude * (Physics.gravity.magnitude * x * x + 2 * y * ballSpeed * ballSpeed);
 
 				if (delta < 0)
 				{
@@ -179,9 +219,9 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 
 				//throwAngle = Mathf.Atan((speed * speed - Mathf.Sqrt(delta)) / (Physics.gravity.magnitude * x));
 
-				speed = Mathf.Sqrt(x * x * Physics.gravity.magnitude / (x * Mathf.Sin(2 * throwAngle) - 2 * y * Mathf.Pow(Mathf.Cos(throwAngle), 2)));
+				ballSpeed = Mathf.Sqrt(x * x * Physics.gravity.magnitude / (x * Mathf.Sin(2 * throwAngle) - 2 * y * Mathf.Pow(Mathf.Cos(throwAngle), 2)));
 
-				Vector3 vel = Vector3.up * speed * Mathf.Sin(throwAngle) + ballToTargetProj.normalized * speed * Mathf.Cos(throwAngle);
+				Vector3 vel = Vector3.up * ballSpeed * Mathf.Sin(throwAngle) + ballToTargetProj.normalized * ballSpeed * Mathf.Cos(throwAngle);
 
 				print(throwAngle * Mathf.Rad2Deg);
 
@@ -193,6 +233,7 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 		}
 
 		
+		
 	}
 
 
@@ -201,11 +242,49 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 		if (photonView.isMine)
 		{
 
-			body.AddForce(
-				bodyObject.right * LHorizontal * maxForce
-				+ bodyObject.forward * LVertical * maxForce
-				+ Vector3.up * RTrigger * maxForce
-				- Vector3.up * LTrigger * maxForce
+			Vector3 force = bodyObject.right * LHorizontal
+				+ bodyObject.forward * LVertical;
+
+			force.Normalize();
+			force *= maxForce;
+
+			if(sprint)
+			{
+				force *= sprintBoost;
+			}
+
+			if(force.magnitude > 0)
+			{
+				body.drag = runninDrag;
+			}
+			else
+			{
+				body.drag = stopDrag;
+			}
+
+			if (!grounded)
+				body.drag = 0;
+
+			//Reduced turning speed based on current velocity
+			//the faster I run the less I can turn
+			if(body.velocity.magnitude > 0.01f)
+			{
+				Vector3 rightOfVelocity = Vector3.Cross(Vector3.up, body.velocity);
+
+				float fwForce = Vector3.Dot(force, body.velocity.normalized);
+				float rightForce = Vector3.Dot(force, rightOfVelocity.normalized);
+
+				float rightForceLimit = Mathf.Lerp(maxRightForce, 0, Mathf.InverseLerp(0, trainSpeed, body.velocity.magnitude));
+
+				rightForce = Mathf.Clamp(rightForce, -rightForceLimit, rightForceLimit);
+
+				force = fwForce * body.velocity.normalized + rightForce * rightOfVelocity.normalized;
+			}
+
+			body.AddForce(force
+				
+				//+ Vector3.up * RTrigger * maxForce
+				//- Vector3.up * LTrigger * maxForce
 			);
 
 			HRotBody.AddRelativeTorque(Vector3.up * RHorizontal * maxHTorque);
@@ -216,8 +295,8 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 			bodyProxy.GetComponent<Rigidbody>().AddForce(
 				bodyObject.right * LHorizontal * maxForce
 				+ bodyObject.forward * LVertical * maxForce
-				+ Vector3.up * RTrigger * maxForce
-				- Vector3.up * LTrigger * maxForce
+				//+ Vector3.up * RTrigger * maxForce
+				//- Vector3.up * LTrigger * maxForce
 			);
 		}	
 		
@@ -239,6 +318,7 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 			stream.SendNext (LVertical);
 			stream.SendNext (RTrigger);
 			stream.SendNext (LTrigger);
+			stream.SendNext (sprint);
 
 		} else {
 			
@@ -248,6 +328,8 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 			LVertical = (float)stream.ReceiveNext ();
 			RTrigger = (float)stream.ReceiveNext ();
 			LTrigger = (float)stream.ReceiveNext ();
+			sprint = (bool)stream.ReceiveNext();
+
 		}
 	}
 
@@ -255,10 +337,15 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 	{
 		RHorizontal = Input.GetAxis("RHorizontal");
 		RVertical = Input.GetAxis("RVertical");
+
 		LHorizontal = Input.GetAxis("LHorizontal");
 		LVertical = Input.GetAxis("LVertical");
+
 		RTrigger = Input.GetAxis("RTrigger");
 		LTrigger = Input.GetAxis("LTrigger");
+
+		sprint = Input.GetKey(KeyCode.LeftShift);
+		
 
 		if (Input.GetKey(KeyCode.A))
 			LHorizontal = -1;
@@ -268,5 +355,12 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 			LVertical = 1;
 		if (Input.GetKey(KeyCode.S))
 			LVertical = -1;
+
+
+		if(!grounded)
+		{
+			LHorizontal = 0;
+			LVertical = 0;
+		}
 	}
 }

@@ -398,6 +398,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1904512546018454
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4803875668242650}
+  m_Layer: 0
+  m_Name: groundCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1965000305893452
 GameObject:
   m_ObjectHideFlags: 0
@@ -598,6 +613,7 @@ Transform:
   - {fileID: 4353379993258824}
   - {fileID: 4555292539607652}
   - {fileID: 4163087397520278}
+  - {fileID: 4803875668242650}
   m_Father: {fileID: 4136596580432856}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -654,6 +670,19 @@ Transform:
   - {fileID: 4981530595970982}
   m_Father: {fileID: 4543911836977214}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4803875668242650
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1904512546018454}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -1.11, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4543911836977214}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4825413965298434
 Transform:
@@ -1144,7 +1173,7 @@ Rigidbody:
   m_GameObject: {fileID: 1224299865735078}
   serializedVersion: 2
   m_Mass: 10
-  m_Drag: 1
+  m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
@@ -1914,9 +1943,9 @@ MonoBehaviour:
   VRotBody: {fileID: 54548166342254750}
   eyes: {fileID: 0}
   targetObj: {fileID: 1965000305893452}
+  groundCheck: {fileID: 4803875668242650}
   maxHTorque: 5
   maxVTorque: 5
-  maxForce: 300
   localInput: 1
   ballSocket: {fileID: 4163087397520278}
   speed: 50
@@ -1926,7 +1955,7 @@ SphereCollider:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1330262040906316}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 448fccf31ff054b45a578e8965a4eec1, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
