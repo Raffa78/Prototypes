@@ -51,6 +51,7 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 	float throwAngle;
 	bool aiming;
 	float throwAngleIncRate = 40.0f * Mathf.Deg2Rad;
+	float maxThrowVel = 50.0f;
 
 	float mouseSens = 3.0f;
 	float VLookMaxAngle;
@@ -224,6 +225,11 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 				Vector3 vel = Vector3.up * ballSpeed * Mathf.Sin(throwAngle) + ballToTargetProj.normalized * ballSpeed * Mathf.Cos(throwAngle);
 
 				print(throwAngle * Mathf.Rad2Deg);
+
+				if(vel.magnitude > maxThrowVel)
+				{
+					vel = vel.normalized * maxThrowVel;
+				}
 
 				GetComponentInChildren<CatchBall>().ThrowBall(vel);
 
