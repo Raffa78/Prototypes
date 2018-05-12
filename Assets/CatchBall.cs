@@ -29,6 +29,13 @@ public class CatchBall : MonoBehaviour {
 
 		if(collision.transform.name == "Ball")
 		{
+			SBBall ball = collision.transform.GetComponent<SBBall>();
+
+			if(!ball.IsMine())
+			{
+				ball.TakeOver();
+			}
+
 			ballBody = collision.rigidbody;
 			collision.rigidbody.isKinematic = true;
 			collision.transform.parent = ballSocket;

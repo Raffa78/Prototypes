@@ -97,10 +97,11 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 
 			yield return new WaitForSeconds(0.5f);
 
-			Rigidbody rb = transform.Find("BodyProxy").GetComponent<Rigidbody>();
+			//move the bodyproxy where the body is
+			Rigidbody rb = bodyProxy.GetComponent<Rigidbody>();
 			rb.isKinematic = true;
-			rb.position = transform.Find("Body").position;
-			rb.rotation = transform.Find("Body").rotation;
+			rb.position = bodyObject.position;
+			rb.rotation = bodyObject.rotation;
 			rb.isKinematic = false;
 			
 		} else {

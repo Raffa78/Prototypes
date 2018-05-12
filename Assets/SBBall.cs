@@ -13,4 +13,14 @@ public class SBBall : MonoBehaviour {
 		photonView = GetComponent<PhotonView>();
 		
 	}
+
+	public void TakeOver()
+	{
+		photonView.TransferOwnership(PhotonNetwork.player.ID);
+	}
+
+	public bool IsMine()
+	{
+		return photonView.isMine;
+	}
 }
