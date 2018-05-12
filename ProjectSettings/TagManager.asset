@@ -15,8 +15,8 @@ TagManager:
   - 
   - NoCollisions
   - Sword
-  - 
-  - 
+  - PlayerColliding
+  - PlayerNotColliding
   - 
   - 
   - 
