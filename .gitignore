@@ -8,3 +8,10 @@ Temp/
 *.suo
 obj/
 
+Assets/Editor Default Resources/
+Assets/UMotion Examples/
+UMotionAutoBackups/
+Assets/umotion_project.asset.meta
+Assets/umotion_project.asset
+Assets/UMotion Examples.meta
+Assets/Editor Default Resources.meta

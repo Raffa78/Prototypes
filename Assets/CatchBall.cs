@@ -56,4 +56,8 @@ public class CatchBall : MonoBehaviour {
 		ballBody = null;
 	}
 
+	public bool HasBall()
+	{
+		return ballBody != null;
+	}
 }
