@@ -16,6 +16,8 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 	public GameObject targetObj;
 	public Transform groundCheck;
 
+	float mouseSens = 3.0f;
+
 	public float maxHTorque = 1.0f;
 	public float maxVTorque = 1.0f;
 
@@ -25,7 +27,19 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 	float stopDrag = 6.0f;
 	float runninDrag = 2.0f;
 
+	float sprintBoost = 3.0f;
+
 	float jumpForce = 200.0f;
+
+	float punchCooldown = 0.5f;
+	float punchDashForce = 200.0f;
+
+	float ballSpeed = 50.0f;
+	float startThrowAngle = 10.0f * Mathf.Deg2Rad;
+	float maxThrowAngle = 50.0f * Mathf.Deg2Rad;
+	float throwAngleIncRate = 40.0f * Mathf.Deg2Rad;
+	float maxThrowVel = 50.0f;
+	public Transform ballSocket;	
 
 	float gravityScale = 3.0f;
 
@@ -42,26 +56,22 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 	bool sendJump;
 	bool jumpConsumed = true;
 	bool sprint;
-	float sprintBoost = 3.0f;
-
+	
 	PhotonView m_PhotonView;
 
-	public Transform ballSocket;
-
-	public float ballSpeed = 50.0f;
 	
-	float startThrowAngle = 10.0f * Mathf.Deg2Rad;
-	float maxThrowAngle = 50.0f * Mathf.Deg2Rad;
+	
 	float throwAngle;
 	bool aiming;
-	float throwAngleIncRate = 40.0f * Mathf.Deg2Rad;
-	float maxThrowVel = 50.0f;
+	bool punching;
+	bool sendPunch;
+	
+	float punchTime;
 
-	float mouseSens = 3.0f;
 	float VLookMaxAngle;
 	float VLookMinAngle;
 
-	bool grounded;
+	CatchBall ballCatcher;
 
 	// Use this for initialization
 	void Awake() {
@@ -70,6 +80,8 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 
 		VLookMaxAngle = VRotBody.GetComponent<HingeJoint>().limits.max;
 		VLookMinAngle = VRotBody.GetComponent<HingeJoint>().limits.min;
+
+		ballCatcher = GetComponentInChildren<CatchBall>();
 	}
 
 	IEnumerator Start () {
@@ -93,6 +105,9 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 			Array.ForEach<Renderer>(bodyObject.GetComponentsInChildren<Renderer> (), x => x.enabled = false);
 			//Disable colliders also. bodyProxy is jointed to replica and it is our physical representation of other players
 			Array.ForEach<Collider>(bodyObject.GetComponentsInChildren<Collider> (), x => x.enabled = false);
+
+			//Destroy animated character
+			Destroy(bodyObject.GetComponentInChildren<SBAnimator>().gameObject);
 
 			//Disable Camera of other players' replicas
 			eyes.gameObject.SetActive (false);
@@ -138,7 +153,7 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 
 		if (localInput)
 		{
-			GetInputs();
+			GetMovementInputs();
 		}
 
 		//View management. Body rotation follow view
@@ -149,39 +164,86 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 		Physics.Raycast(eyes.transform.position, eyes.transform.forward, out hit);
 		targetObj.transform.position = hit.point;
 
+		if(punching)
+		{
+			if(Time.time - punchTime > punchCooldown)
+			{
+				punching = false;
+				GetComponentInChildren<SBAnimator>().StopPunch();
+			}
+			return;
+		}
+
 		if (!aiming && (Input.GetButtonDown("Fire1")))
 		{
-			aiming = true;
-			throwAngle = startThrowAngle;
+			if(ballCatcher.HasBall())
+			{
+				aiming = true;
+				throwAngle = startThrowAngle;
+			}
+			else
+			{
+				GetComponentInChildren<SBAnimator>().PlayPunch();
+				punchTime = Time.time;
+				punching = true;
+				punchForceApplied = false;
+				sendPunch = true;
+			}
 		}
 
 		if(aiming)
 		{
-			throwAngle = Mathf.Clamp(throwAngle, startThrowAngle, maxThrowAngle);
+			if(ballCatcher.HasBall())
+			{
+				throwAngle = Mathf.Clamp(throwAngle, startThrowAngle, maxThrowAngle);
 
-			if(Input.GetButtonUp("Fire1"))
+				if(Input.GetButtonUp("Fire1"))
+				{
+					aiming = false;
+				
+					Vector3 vel = ComputeThrowVelocity(hit.point, ballSocket.position, throwAngle);
+					ballCatcher.ThrowBall(vel);
+				}
+
+				throwAngle += Time.deltaTime * throwAngleIncRate;
+			}
+			else
 			{
 				aiming = false;
-				
-				Vector3 vel = ComputeThrowVelocity(hit.point, ballSocket.position, throwAngle);
-				GetComponentInChildren<CatchBall>().ThrowBall(vel);
 			}
-
-			throwAngle += Time.deltaTime * throwAngleIncRate;
 		}
 	}
 
+	bool punchForceApplied;
 
 	void FixedUpdate() {
 
+		Vector3 force = bodyForce;
+
 		if (photonView.isMine)
 		{
-			if(!IsBodyGrounded(body) && jumping)
+			
+			if(!IsBodyGrounded(body))
 			{
-				jumping = false;
+				if(jumping)
+				{
+					jumping = false;
+				}
+
+				force = Vector3.zero;
 			}
 
-			ApplyBodyForces(body, bodyForce, sprint, jumping);
+			if(punching)
+			{
+				force = Vector3.zero;
+			}
+
+			ApplyBodyForces(body, force, sprint, jumping, punching && !punchForceApplied);
+
+			if(punching && !punchForceApplied)
+			{
+				punchForceApplied = true;
+			}
 
 			if(jumping)
 			{
@@ -195,14 +257,35 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 		}
 		else
 		{
-			ApplyBodyForces(bodyProxy.GetComponent<Rigidbody>(), bodyForce, sprint, sendJump);
+			if(!IsBodyGrounded(bodyProxy.GetComponent<Rigidbody>()))
+			{
+				force = Vector3.zero;
+			}
+
+			if(punching)
+			{
+				force = Vector3.zero;
+				if(Time.time - punchTime > punchCooldown)
+				{
+					punching = false;
+					GetComponentInChildren<SBAnimator>().StopPunch();
+				}
+			}
+
+			ApplyBodyForces(bodyProxy.GetComponent<Rigidbody>(), force, sprint, sendJump, punching && !punchForceApplied);
+
+			if(punching && !punchForceApplied)
+			{
+				punchForceApplied = true;
+			}
+
 			sendJump = false;
 			jumpConsumed = true;
 		}	
 		
 	}
 	
-	void ApplyBodyForces(Rigidbody _body, Vector3 _force, bool _sprint, bool _jump)
+	void ApplyBodyForces(Rigidbody _body, Vector3 _force, bool _sprint, bool _jump, bool _punch)
 	{
 		_force.Normalize();
 		_force *= maxForce;
@@ -222,27 +305,25 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 		}
 		
 		
-		if (IsBodyGrounded(_body))
+		//Reduced turning speed based on current velocity
+		//the faster I run the less I can turn
+		if (_body.velocity.magnitude > 0.01f)
 		{
-			//Reduced turning speed based on current velocity
-			//the faster I run the less I can turn
-			if (_body.velocity.magnitude > 0.01f)
-			{
-				Vector3 rightOfVelocity = Vector3.Cross(Vector3.up, _body.velocity);
+			Vector3 rightOfVelocity = Vector3.Cross(Vector3.up, _body.velocity);
 
-				float fwForce = Vector3.Dot(_force, _body.velocity.normalized);
-				float rightForce = Vector3.Dot(_force, rightOfVelocity.normalized);
+			float fwForce = Vector3.Dot(_force, _body.velocity.normalized);
+			float rightForce = Vector3.Dot(_force, rightOfVelocity.normalized);
 
-				float rightForceLimit = Mathf.Lerp(maxRightForce, 0, Mathf.InverseLerp(0, trainSpeed, _body.velocity.magnitude));
+			float rightForceLimit = Mathf.Lerp(maxRightForce, 0, Mathf.InverseLerp(0, trainSpeed, _body.velocity.magnitude));
 
-				rightForce = Mathf.Clamp(rightForce, -rightForceLimit, rightForceLimit);
+			rightForce = Mathf.Clamp(rightForce, -rightForceLimit, rightForceLimit);
 
-				_force = fwForce * _body.velocity.normalized + rightForce * rightOfVelocity.normalized;
-			}
-
-			_body.AddForce(_force);
+			_force = fwForce * _body.velocity.normalized + rightForce * rightOfVelocity.normalized;
 		}
-		else
+
+		_body.AddForce(_force);
+		
+		if(!IsBodyGrounded(_body))
 		{
 			_body.drag = 0;
 		}
@@ -250,6 +331,11 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 		if(_jump)
 		{
 			_body.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+		}
+
+		if(_punch)
+		{
+			_body.AddForce(_body.velocity.normalized * punchDashForce, ForceMode.Impulse);
 		}
 	}
 
@@ -259,13 +345,15 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 
 			localInput = false;
 
-			GetInputs();
+			GetMovementInputs();
 
 			stream.SendNext (bodyForce);
 			stream.SendNext (sendJump);
 			stream.SendNext (sprint);
+			stream.SendNext(sendPunch);
 
 			sendJump = false;
+			sendPunch = false;
 
 		}
 		else
@@ -274,6 +362,7 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 			bodyForce = (Vector3)stream.ReceiveNext ();
 			bool jump = (bool)stream.ReceiveNext();
 			sprint = (bool)stream.ReceiveNext();
+			bool punch = (bool)stream.ReceiveNext();
 
 			if (jumpConsumed)
 			{
@@ -281,10 +370,18 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 				jumpConsumed = false;
 			}
 
+			if(punch)
+			{
+				punching = true;
+				punchTime = Time.time;
+				GetComponentInChildren<SBAnimator>().PlayPunch();
+				punchForceApplied = false;
+			}
+
 		}
 	}
 
-	void GetInputs()
+	void GetMovementInputs()
 	{
 		RHorizontal = Input.GetAxis("RHorizontal");
 		RVertical = Input.GetAxis("RVertical");

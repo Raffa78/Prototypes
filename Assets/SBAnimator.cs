@@ -33,4 +33,14 @@ public class SBAnimator : MonoBehaviour {
 			transform.rotation = lastRotation;
 		}
 	}
+
+	public void PlayPunch()
+	{
+		anim.SetTrigger("Punch");
+	}
+
+	public void StopPunch()
+	{
+		anim.SetTrigger("EndPunch");
+	}
 }
