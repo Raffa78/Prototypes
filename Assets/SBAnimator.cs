@@ -5,6 +5,7 @@ using UnityEngine;
 public class SBAnimator : MonoBehaviour {
 
 	float runAnimSpeed = 5.0f;
+	Quaternion lastRotation;
 
 	Animator anim;
 	Rigidbody body;
@@ -21,6 +22,15 @@ public class SBAnimator : MonoBehaviour {
 
 		Vector3 fw = body.velocity;
 		fw.y = 0;
-		transform.rotation = Quaternion.LookRotation(fw);
+
+		if(fw != Vector3.zero)
+		{
+			transform.rotation = Quaternion.LookRotation(fw);
+			lastRotation = transform.rotation;
+		}
+		else
+		{
+			transform.rotation = lastRotation;
+		}
 	}
 }
