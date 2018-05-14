@@ -45,4 +45,5 @@ MonoBehaviour:
   - SwordHit
   - SetSwingTriggerToProxy
   - HitRoundTrip
+  - PunchOther
   DisableAutoOpenWizard: 1

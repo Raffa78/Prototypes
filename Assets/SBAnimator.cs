@@ -10,6 +10,8 @@ public class SBAnimator : MonoBehaviour {
 	Animator anim;
 	Rigidbody body;
 
+	bool punched;
+
 	// Use this for initialization
 	void Start () {
 		anim = GetComponent<Animator>();
@@ -18,12 +20,18 @@ public class SBAnimator : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+		if(punched)
+		{
+			return;
+		}
+
 		anim.SetFloat("Forward", body.velocity.magnitude / runAnimSpeed, 0.0f, Time.deltaTime);
 
 		Vector3 fw = body.velocity;
 		fw.y = 0;
 
-		if(fw != Vector3.zero)
+		if (fw.magnitude > 0.1f)
 		{
 			transform.rotation = Quaternion.LookRotation(fw);
 			lastRotation = transform.rotation;
@@ -42,5 +50,17 @@ public class SBAnimator : MonoBehaviour {
 	public void StopPunch()
 	{
 		anim.SetTrigger("EndPunch");
+	}
+
+	public void PlayPunched()
+	{
+		punched = true;
+		anim.SetTrigger("Punched");
+	}
+
+	public void StopPunched()
+	{
+		punched = false;
+		anim.SetTrigger("EndPunched");
 	}
 }

@@ -34,6 +34,8 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 	float punchCooldown = 0.5f;
 	float punchDashForce = 200.0f;
 
+	float punchedRecovery = 3.0f;
+
 	float ballSpeed = 50.0f;
 	float startThrowAngle = 10.0f * Mathf.Deg2Rad;
 	float maxThrowAngle = 50.0f * Mathf.Deg2Rad;
@@ -41,7 +43,7 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 	float maxThrowVel = 50.0f;
 	public Transform ballSocket;	
 
-	float gravityScale = 3.0f;
+	float gravityScale = 1.0f;
 
 	public bool localInput = true;
 
@@ -65,8 +67,10 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 	bool aiming;
 	bool punching;
 	bool sendPunch;
-	
+
+	bool punched;
 	float punchTime;
+	float punchedTime;
 
 	float VLookMaxAngle;
 	float VLookMinAngle;
@@ -238,6 +242,16 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 				force = Vector3.zero;
 			}
 
+			if(punched)
+			{
+				force = Vector3.zero;
+				if(Time.time - punchedTime > punchedRecovery)
+				{
+					punched = false;
+					GetComponentInChildren<SBAnimator>().StopPunched();
+				}
+			}
+
 			ApplyBodyForces(body, force, sprint, jumping, punching && !punchForceApplied);
 
 			if(punching && !punchForceApplied)
@@ -269,6 +283,16 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 				{
 					punching = false;
 					GetComponentInChildren<SBAnimator>().StopPunch();
+				}
+			}
+
+			if (punched)
+			{
+				force = Vector3.zero;
+				if (Time.time - punchedTime > punchedRecovery)
+				{
+					punched = false;
+					GetComponentInChildren<SBAnimator>().StopPunched();
 				}
 			}
 
@@ -480,5 +504,14 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 		VRotBody.transform.eulerAngles = euler;
 		eyes.transform.rotation = HRotBody.transform.rotation * VRotBody.transform.rotation;
 		body.rotation = HRotBody.transform.rotation;
+	}
+
+	public void GetPunched()
+	{
+		punched = true;
+		punchedTime = Time.time;
+
+		//Play Punched Animation
+		GetComponentInChildren<SBAnimator>().PlayPunched();
 	}
 }
