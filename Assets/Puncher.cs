@@ -35,7 +35,7 @@ public class Puncher : MonoBehaviour {
 		bodyProxy.transform.Find("KinematicBodyProxy").gameObject.SetActive(false);
 
 		Vector3 hitForce = transform.parent.GetComponentInChildren<SBAnimator>().transform.forward;
-		hitForce.y = 0.2f;
+		hitForce.y = 0.4f;
 		hitForce.Normalize();
 		hitForce *= punchForce;
 
