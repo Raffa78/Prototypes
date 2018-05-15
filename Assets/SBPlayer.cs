@@ -176,6 +176,7 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 				punching = false;
 				GetComponentInChildren<SBAnimator>().StopPunch();
 				GetComponentInChildren<Puncher>().DisablePunch();
+				bodyObject.gameObject.layer = LayerMask.NameToLayer("PlayerColliding");
 			}
 			return;
 		}
@@ -191,6 +192,7 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 			{
 				GetComponentInChildren<SBAnimator>().PlayPunch();
 				GetComponentInChildren<Puncher>().EnablePunch();
+				bodyObject.gameObject.layer = LayerMask.NameToLayer("PlayerNotColliding");
 				punchTime = Time.time;
 				punching = true;
 				punchForceApplied = false;
