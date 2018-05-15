@@ -32,7 +32,9 @@ public class Puncher : MonoBehaviour {
 			return;
 		}
 
-		Vector3 hitForce = transform.forward;
+		bodyProxy.transform.Find("KinematicBodyProxy").gameObject.SetActive(false);
+
+		Vector3 hitForce = transform.parent.GetComponentInChildren<SBAnimator>().transform.forward;
 		hitForce.y = 0.2f;
 		hitForce.Normalize();
 		hitForce *= punchForce;
