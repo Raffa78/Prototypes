@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Puncher : MonoBehaviour {
 
-	float punchForce = 100.0f;
+	float punchForce = 300.0f;
 
 	Collider punchCollider;
 	PhotonView pv;

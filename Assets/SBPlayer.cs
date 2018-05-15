@@ -67,6 +67,7 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 	bool aiming;
 	bool punching;
 	bool sendPunch;
+	Vector3 punchDir;
 
 	bool punched;
 	float punchTime;
@@ -192,6 +193,7 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 				punching = true;
 				punchForceApplied = false;
 				sendPunch = true;
+				punchDir = body.velocity;
 			}
 		}
 
@@ -252,7 +254,7 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 				}
 			}
 
-			ApplyBodyForces(body, force, sprint, jumping, punching && !punchForceApplied);
+			ApplyBodyForces(body, force, sprint, jumping, punching && !punchForceApplied, punchDir);
 
 			if(punching && !punchForceApplied)
 			{
@@ -296,7 +298,7 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 				}
 			}
 
-			ApplyBodyForces(bodyProxy.GetComponent<Rigidbody>(), force, sprint, sendJump, punching && !punchForceApplied);
+			ApplyBodyForces(bodyProxy.GetComponent<Rigidbody>(), force, sprint, sendJump, punching && !punchForceApplied, punchDir);
 
 			if(punching && !punchForceApplied)
 			{
@@ -309,7 +311,7 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 		
 	}
 	
-	void ApplyBodyForces(Rigidbody _body, Vector3 _force, bool _sprint, bool _jump, bool _punch)
+	void ApplyBodyForces(Rigidbody _body, Vector3 _force, bool _sprint, bool _jump, bool _punch, Vector3 _punchDir)
 	{
 		_force.Normalize();
 		_force *= maxForce;
@@ -359,7 +361,7 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 
 		if(_punch)
 		{
-			_body.AddForce(_body.velocity.normalized * punchDashForce, ForceMode.Impulse);
+			_body.AddForce(_punchDir.normalized * punchDashForce, ForceMode.Impulse);
 		}
 	}
 
@@ -375,6 +377,7 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 			stream.SendNext (sendJump);
 			stream.SendNext (sprint);
 			stream.SendNext(sendPunch);
+			stream.SendNext(punchDir);
 
 			sendJump = false;
 			sendPunch = false;
@@ -387,6 +390,7 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 			bool jump = (bool)stream.ReceiveNext();
 			sprint = (bool)stream.ReceiveNext();
 			bool punch = (bool)stream.ReceiveNext();
+			punchDir = (Vector3)stream.ReceiveNext();
 
 			if (jumpConsumed)
 			{
