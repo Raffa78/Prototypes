@@ -28,6 +28,7 @@ public class Puncher : MonoBehaviour {
 
 		if(bodyProxy.name != "BodyProxy")
 		{
+			print(bodyProxy.name);
 			return;
 		}
 
@@ -38,7 +39,7 @@ public class Puncher : MonoBehaviour {
 
 		Rigidbody hitBody = bodyProxy.GetComponent<Rigidbody>();
 		hitBody.AddForce(hitForce, ForceMode.Impulse);
-
+		print("hit");
 		int id = bodyProxy.transform.parent.Find("Body").GetComponent<PhotonView>().viewID;
 		pv.RPC("PunchOther", PhotonTargets.Others, id, hitForce);
 

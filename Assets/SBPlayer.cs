@@ -175,6 +175,7 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 			{
 				punching = false;
 				GetComponentInChildren<SBAnimator>().StopPunch();
+				GetComponentInChildren<Puncher>().DisablePunch();
 			}
 			return;
 		}
@@ -189,6 +190,7 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 			else
 			{
 				GetComponentInChildren<SBAnimator>().PlayPunch();
+				GetComponentInChildren<Puncher>().EnablePunch();
 				punchTime = Time.time;
 				punching = true;
 				punchForceApplied = false;
