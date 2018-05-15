@@ -197,7 +197,7 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 				punching = true;
 				punchForceApplied = false;
 				sendPunch = true;
-				punchDir = body.velocity;
+				punchDir = body.velocity.normalized + Vector3.up*0.4f;
 			}
 		}
 
