@@ -253,7 +253,6 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 				{
 					punched = false;
 					GetComponentInChildren<SBAnimator>().StopPunched();
-					bodyProxy.transform.Find("KinematicBodyProxy").gameObject.SetActive(true);
 				}
 			}
 
@@ -298,6 +297,7 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 				{
 					punched = false;
 					GetComponentInChildren<SBAnimator>().StopPunched();
+					bodyProxy.transform.Find("KinematicBodyProxy").gameObject.SetActive(true);
 				}
 			}
 
