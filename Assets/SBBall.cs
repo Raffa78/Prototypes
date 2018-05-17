@@ -11,7 +11,7 @@ public class SBBall : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		photonView = GetComponent<PhotonView>();
-		
+		transform.parent = null;	
 	}
 
 	public void TakeOver()
