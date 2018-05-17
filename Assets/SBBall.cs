@@ -13,7 +13,7 @@ public class SBBall : MonoBehaviour {
 		photonView = GetComponent<PhotonView>();
 		transform.parent = null;
 
-		if (!PhotonNetwork.player.IsMasterClient)
+		if (!PhotonNetwork.player.IsMasterClient && photonView.isMine)
 		{
 			Destroy(gameObject);
 		}	
