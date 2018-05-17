@@ -11,7 +11,12 @@ public class SBBall : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		photonView = GetComponent<PhotonView>();
-		transform.parent = null;	
+		transform.parent = null;
+
+		if (!PhotonNetwork.player.IsMasterClient)
+		{
+			Destroy(gameObject);
+		}	
 	}
 
 	public void TakeOver()
