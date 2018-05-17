@@ -78,6 +78,9 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 
 	CatchBall ballCatcher;
 
+	float jointOriginalSpring;
+	float jointOriginalDamp;
+
 	// Use this for initialization
 	void Awake() {
 		
@@ -130,6 +133,7 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 			print ("net: " + PhotonNetwork.sendRate + " " + PhotonNetwork.sendRateOnSerialize);
 
 			Destroy (bodyProxy.gameObject);
+			bodyProxy = null;
 
 			Physics.gravity *= gravityScale;
 		}
@@ -300,6 +304,24 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 					punched = false;
 					GetComponentInChildren<SBAnimator>().StopPunched();
 					bodyProxy.transform.Find("KinematicBodyProxy").gameObject.SetActive(true);
+					//TODO: bodyproxy joint needs to be enabled
+
+					if (bodyProxy != null)
+					{
+						ConfigurableJoint joint = bodyProxy.GetComponent<ConfigurableJoint>();
+
+						jointOriginalSpring = joint.xDrive.positionSpring;
+						jointOriginalDamp = joint.xDrive.positionDamper;
+
+						JointDrive drive = new JointDrive();
+						drive.positionSpring = jointOriginalSpring;
+						drive.positionDamper = jointOriginalDamp;
+						drive.maximumForce = Mathf.Infinity;
+
+						joint.xDrive = drive;
+						joint.yDrive = drive;
+						joint.zDrive = drive;
+					}
 				}
 			}
 
@@ -522,5 +544,23 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 
 		//Play Punched Animation
 		GetComponentInChildren<SBAnimator>().PlayPunched();
+
+		//disable bodyproxy joints
+		if (bodyProxy != null)
+		{
+			ConfigurableJoint joint = bodyProxy.GetComponent<ConfigurableJoint>();
+
+			jointOriginalSpring = joint.xDrive.positionSpring;
+			jointOriginalDamp = joint.xDrive.positionDamper;
+
+			JointDrive drive = new JointDrive();
+			drive.positionSpring = jointOriginalSpring;
+			drive.positionDamper = jointOriginalDamp;
+			drive.maximumForce = 0.0f;
+
+			joint.xDrive = drive;
+			joint.yDrive = drive;
+			joint.zDrive = drive;
+		}
 	}
 }
