@@ -17,7 +17,13 @@ public class CatchBall : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+		if(ballBody == null)
+		{
+			return;
+		}
+
+		ballBody.transform.position = ballSocket.position;
+		ballBody.transform.rotation = ballSocket.rotation;
 	}
 
 	private void OnCollisionEnter(Collision collision)
@@ -38,9 +44,9 @@ public class CatchBall : MonoBehaviour {
 
 			ballBody = collision.rigidbody;
 			collision.rigidbody.isKinematic = true;
-			collision.transform.parent = ballSocket;
-			collision.transform.localPosition = Vector3.zero;
-			collision.transform.localRotation = Quaternion.identity;
+			collision.transform.parent = null;
+			collision.transform.localPosition = ballSocket.position;
+			collision.transform.localRotation = ballSocket.rotation;
 		}
 	}
 
