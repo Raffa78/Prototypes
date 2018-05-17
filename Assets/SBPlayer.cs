@@ -34,7 +34,7 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 	float punchCooldown = 0.5f;
 	float punchDashForce = 200.0f;
 
-	float punchedRecovery = 3.0f;
+	float punchedRecovery = 0.5f;
 
 	float ballSpeed = 50.0f;
 	float startThrowAngle = 10.0f * Mathf.Deg2Rad;
@@ -457,6 +457,11 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 			LVertical = 1;
 		if (Input.GetKey(KeyCode.S))
 			LVertical = -1;
+
+		if(bodyObject == null)
+		{
+			return;
+		}
 
 		bodyForce = bodyObject.right * LHorizontal
 				+ bodyObject.forward * LVertical;
