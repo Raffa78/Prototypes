@@ -38,7 +38,7 @@ public class CatchBall : MonoBehaviour
 
 		if (other.transform.parent.name == "Ball")
 		{
-			SBBall ball = other.transform.GetComponent<SBBall>();
+			SBBall ball = other.transform.parent.GetComponent<SBBall>();
 
 			if (!ball.IsMine())
 			{
