@@ -550,6 +550,12 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 		//Play Punched Animation
 		GetComponentInChildren<SBAnimator>().PlayPunched();
 
+		//Drop the ball if have it
+		if(ballCatcher != null && ballCatcher.HasBall())
+		{
+
+		}
+
 		//disable bodyproxy joints
 		if (bodyProxy != null)
 		{

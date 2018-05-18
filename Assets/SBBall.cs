@@ -24,6 +24,11 @@ public class SBBall : MonoBehaviour {
 		photonView.TransferOwnership(PhotonNetwork.player.ID);
 	}
 
+	public void RequestOwnership()
+	{
+		photonView.RequestOwnership();
+	}
+
 	public bool IsMine()
 	{
 		return photonView.isMine;
