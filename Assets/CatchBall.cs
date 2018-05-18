@@ -29,16 +29,16 @@ public class CatchBall : MonoBehaviour
 		ballBody.transform.rotation = ballSocket.rotation;
 	}
 
-	private void OnCollisionEnter(Collision collision)
+	private void OnTriggerEnter(Collider other)
 	{
 		if (ballBody != null)
 		{
 			return;
 		}
 
-		if (collision.transform.name == "Ball")
+		if (other.transform.name == "Ball")
 		{
-			SBBall ball = collision.transform.GetComponent<SBBall>();
+			SBBall ball = other.transform.GetComponent<SBBall>();
 
 			if (!ball.IsMine())
 			{
@@ -46,11 +46,11 @@ public class CatchBall : MonoBehaviour
 			}
 
 			ball.Catch();
-			ballBody = collision.rigidbody;
-			collision.rigidbody.isKinematic = true;
-			collision.transform.parent = null;
-			collision.transform.localPosition = ballSocket.position;
-			collision.transform.localRotation = ballSocket.rotation;
+			ballBody = other.GetComponent<Rigidbody>();
+			ballBody.isKinematic = true;
+			other.transform.parent = null;
+			other.transform.localPosition = ballSocket.position;
+			other.transform.localRotation = ballSocket.rotation;
 		}
 	}
 
