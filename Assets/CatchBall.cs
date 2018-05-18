@@ -36,6 +36,11 @@ public class CatchBall : MonoBehaviour
 			return;
 		}
 
+		if (other.transform.parent == null)
+		{
+			return;
+		}
+
 		if (other.transform.parent.name == "Ball")
 		{
 			SBBall ball = other.transform.parent.GetComponent<SBBall>();
@@ -46,11 +51,11 @@ public class CatchBall : MonoBehaviour
 			}
 
 			ball.Catch();
-			ballBody = other.GetComponent<Rigidbody>();
+			ballBody = other.transform.parent.GetComponent<Rigidbody>();
 			ballBody.isKinematic = true;
-			other.transform.parent = null;
-			other.transform.localPosition = ballSocket.position;
-			other.transform.localRotation = ballSocket.rotation;
+			other.transform.parent.parent = null;
+			other.transform.parent.localPosition = ballSocket.position;
+			other.transform.parent.localRotation = ballSocket.rotation;
 		}
 	}
 
