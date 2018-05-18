@@ -45,6 +45,7 @@ public class CatchBall : MonoBehaviour
 				ball.TakeOver();
 			}
 
+			ball.Catch();
 			ballBody = collision.rigidbody;
 			collision.rigidbody.isKinematic = true;
 			collision.transform.parent = null;
@@ -59,6 +60,8 @@ public class CatchBall : MonoBehaviour
 		{
 			return;
 		}
+
+		ballBody.GetComponent<SBBall>().Uncatch();
 
 		ballBody.isKinematic = false;
 		ballBody.velocity = vel;
@@ -76,6 +79,8 @@ public class CatchBall : MonoBehaviour
 		{
 			return;
 		}
+
+		ballBody.GetComponent<SBBall>().Uncatch();
 
 		ballBody.isKinematic = false;
 		ballBody.velocity = Vector3.up * dropSpeed;
