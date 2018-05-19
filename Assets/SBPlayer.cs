@@ -116,6 +116,8 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 
 			//Destroy animated character
 			Destroy(bodyObject.GetComponentInChildren<SBAnimator>().gameObject);
+			//Destroy ball catcher
+			Destroy(bodyObject.GetComponentInChildren<CatchBall>().gameObject);
 
 			//Disable Camera of other players' replicas
 			eyes.gameObject.SetActive (false);
