@@ -20,8 +20,6 @@ public class CatchBall : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		print(ballBody);
-
 		if (ballBody == null)
 		{
 			return;
@@ -47,7 +45,7 @@ public class CatchBall : MonoBehaviour
 		{
 			SBBall ball = other.transform.parent.GetComponent<SBBall>();
 
-			if (!ball.IsMine())
+			if (!ball.IsMine() && !ball.IsCatched())
 			{
 				ball.TakeOver();
 			}

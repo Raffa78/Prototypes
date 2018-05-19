@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class SBBall : MonoBehaviour {
+public class SBBall : MonoBehaviour, IPunObservable
+{
 
 	PhotonView photonView;
 	Rigidbody myRigidbody;
 	bool isCatched;
+	bool takingOver;
 
 	// Use this for initialization
 	IEnumerator Start() {
@@ -50,6 +52,7 @@ public class SBBall : MonoBehaviour {
 
 	public void TakeOver()
 	{
+		takingOver = true;
 		photonView.TransferOwnership(PhotonNetwork.player.ID);
 	}
 
@@ -63,6 +66,11 @@ public class SBBall : MonoBehaviour {
 		return photonView.isMine;
 	}
 
+	public bool IsCatched()
+	{
+		return isCatched;
+	}
+
 	public void Catch()
 	{
 		isCatched = true;
@@ -71,5 +79,22 @@ public class SBBall : MonoBehaviour {
 	public void Uncatch()
 	{
 		isCatched = false;
+	}
+
+	public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+	{
+		if(stream.isWriting)
+		{
+			takingOver = false;
+			stream.SendNext(isCatched);
+		}
+		else
+		{
+			if(!takingOver)
+			{
+				isCatched = (bool)stream.ReceiveNext();
+			}
+		}
+
 	}
 }
