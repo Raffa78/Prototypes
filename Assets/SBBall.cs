@@ -18,7 +18,7 @@ public class SBBall : MonoBehaviour, IPunObservable
 		photonView = GetComponent<PhotonView>();
 		transform.parent = null;
 
-		if (!PhotonNetwork.player.IsMasterClient && photonView.isMine)
+		if (!(PhotonNetwork.player.IsMasterClient && photonView.isMine))
 		{
 			yield return new WaitForSeconds(0.5f);
 			Destroy(gameObject);
