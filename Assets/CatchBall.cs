@@ -45,10 +45,15 @@ public class CatchBall : MonoBehaviour
 		{
 			SBBall ball = other.transform.parent.GetComponent<SBBall>();
 
-			if (!ball.IsMine() && !ball.IsCatched())
+			if(ball.IsCatched())
+			{
+				return;
+			}
+
+			if (!ball.IsMine())
 			{
 				ball.TakeOver();
-				print(Time.frameCount + ": BALL CATCHED!");
+				print(Time.frameCount + ": BALL TAKING OVER");
 			}
 
 			ball.Catch();
@@ -57,6 +62,7 @@ public class CatchBall : MonoBehaviour
 			other.transform.parent.parent = null;
 			other.transform.parent.localPosition = ballSocket.position;
 			other.transform.parent.localRotation = ballSocket.rotation;
+			print(Time.frameCount + ": BALL CATCHED");
 		}
 	}
 
