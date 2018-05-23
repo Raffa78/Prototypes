@@ -48,6 +48,7 @@ public class CatchBall : MonoBehaviour
 			if (!ball.IsMine() && !ball.IsCatched())
 			{
 				ball.TakeOver();
+				print(Time.frameCount + ": BALL CATCHED!");
 			}
 
 			ball.Catch();
@@ -91,5 +92,6 @@ public class CatchBall : MonoBehaviour
 		ballBody.velocity = Vector3.up * dropSpeed;
 		ballBody = null;
 
+		print(Time.frameCount + ": BALL DROPPED!");
 	}
 }
