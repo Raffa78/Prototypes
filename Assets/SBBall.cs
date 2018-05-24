@@ -83,6 +83,7 @@ public class SBBall : MonoBehaviour, IPunObservable
 
 	public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
 	{
+		print(Time.frameCount + ": photonView.isMine = " + photonView.isMine);
 		if(stream.isWriting)
 		{
 			print(Time.frameCount + ": stream is writing");
