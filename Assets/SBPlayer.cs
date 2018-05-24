@@ -493,6 +493,12 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable
 				Cursor.visible = true;
 			}
 		}
+
+		if(Input.GetMouseButtonDown(0))
+		{
+			Cursor.lockState = CursorLockMode.Locked;
+			Cursor.visible = false;
+		}
 	}
 
 	void UpdateBodyRenderers()
