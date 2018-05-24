@@ -508,14 +508,28 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 		Plane plane = new Plane(Vector3.up, Vector3.zero);
 		Vector3 ballToTargetProj = plane.ClosestPointOnPlane(ballToTarget);
 		float x = ballToTargetProj.magnitude;
+
+		/*
 		float delta = Mathf.Pow(ballSpeed, 4) -
 			Physics.gravity.magnitude * (Physics.gravity.magnitude * x * x + 2 * y * ballSpeed * ballSpeed);
 		if (delta < 0)
 		{
 			Debug.LogError("negative delta");
 		}
-		//throwAngle = Mathf.Atan((speed * speed - Mathf.Sqrt(delta)) / (Physics.gravity.magnitude * x
-		ballSpeed = Mathf.Sqrt(x * x * Physics.gravity.magnitude / (x * Mathf.Sin(2 * angle) - 2 * y * Mathf.Pow(Mathf.Cos(angle), 2)));
+		throwAngle = Mathf.Atan((speed * speed - Mathf.Sqrt(delta)) / (Physics.gravity.magnitude * x
+		*/
+
+		float sqrtArg = x * x * Physics.gravity.magnitude / (x * Mathf.Sin(2 * angle) - 2 * y * Mathf.Pow(Mathf.Cos(angle), 2));
+
+		if(sqrtArg < 0)
+		{
+			ballSpeed = maxThrowVel;
+		}
+		else
+		{ 
+			ballSpeed = Mathf.Sqrt(sqrtArg);
+		}
+
 		Vector3 vel = Vector3.up * ballSpeed * Mathf.Sin(angle) + ballToTargetProj.normalized * ballSpeed * Mathf.Cos(angle);
 		//print(angle * Mathf.Rad2Deg);
 		if (vel.magnitude > maxThrowVel)
@@ -555,7 +569,7 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 		//Drop the ball if have it
 		if(ballCatcher != null && ballCatcher.HasBall())
 		{
-
+			ballCatcher.DropBall();
 		}
 
 		//disable bodyproxy joints
