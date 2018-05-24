@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
+public class SBPlayer : Photon.MonoBehaviour, IPunObservable
+{
 
 	Transform bodyObject;
 	Rigidbody body;
@@ -41,7 +42,7 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 	float maxThrowAngle = 50.0f * Mathf.Deg2Rad;
 	float throwAngleIncRate = 40.0f * Mathf.Deg2Rad;
 	float maxThrowVel = 50.0f;
-	public Transform ballSocket;	
+	public Transform ballSocket;
 
 	float gravityScale = 1.0f;
 
@@ -51,18 +52,18 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 	float RVertical;
 	float LHorizontal;
 	float LVertical;
-	float RTrigger;
-	float LTrigger;
+	//float RTrigger;
+	//float LTrigger;
 	Vector3 bodyForce;
 	bool jumping;
 	bool sendJump;
 	bool jumpConsumed = true;
 	bool sprint;
-	
+
 	PhotonView m_PhotonView;
 
-	
-	
+
+
 	float throwAngle;
 	bool aiming;
 	bool punching;
@@ -82,8 +83,9 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 	float jointOriginalDamp;
 
 	// Use this for initialization
-	void Awake() {
-		
+	void Awake()
+	{
+
 		m_PhotonView = GetComponent<PhotonView>();
 
 		VLookMaxAngle = VRotBody.GetComponent<HingeJoint>().limits.max;
@@ -92,27 +94,29 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 		ballCatcher = GetComponentInChildren<CatchBall>();
 	}
 
-	IEnumerator Start () {
+	IEnumerator Start()
+	{
 
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
 
-		bodyObject = transform.Find ("Body");
-		body = bodyObject.GetComponent<Rigidbody> ();
+		bodyObject = transform.Find("Body");
+		body = bodyObject.GetComponent<Rigidbody>();
 
-		bodyProxy = transform.Find ("BodyProxy");
+		bodyProxy = transform.Find("BodyProxy");
 
-		eyes = /*transform.Find ("BodyPuller").*/bodyObject.transform.Find ("Eyes");
+		eyes = /*transform.Find ("BodyPuller").*/bodyObject.transform.Find("Eyes");
 
-		if (!m_PhotonView.isMine) {
+		if (!m_PhotonView.isMine)
+		{
 
 			//our rigidbody replica is moved cinematically via Photon Transform View
 			body.isKinematic = true;
 
 			//Disable all mesh renderer children. We don't want to see the other players exact replica, but bodyProxy instead
-			Array.ForEach<Renderer>(bodyObject.GetComponentsInChildren<Renderer> (), x => x.enabled = false);
+			Array.ForEach<Renderer>(bodyObject.GetComponentsInChildren<Renderer>(), x => x.enabled = false);
 			//Disable colliders also. bodyProxy is jointed to replica and it is our physical representation of other players
-			Array.ForEach<Collider>(bodyObject.GetComponentsInChildren<Collider> (), x => x.enabled = false);
+			Array.ForEach<Collider>(bodyObject.GetComponentsInChildren<Collider>(), x => x.enabled = false);
 
 			//Destroy animated character
 			Destroy(bodyObject.GetComponentInChildren<SBAnimator>().gameObject);
@@ -120,7 +124,7 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 			Destroy(bodyObject.GetComponentInChildren<CatchBall>().gameObject);
 
 			//Disable Camera of other players' replicas
-			eyes.gameObject.SetActive (false);
+			eyes.gameObject.SetActive(false);
 
 			yield return new WaitForSeconds(0.5f);
 
@@ -130,11 +134,13 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 			rb.position = bodyObject.position;
 			rb.rotation = bodyObject.rotation;
 			rb.isKinematic = false;
-			
-		} else {
-			print ("net: " + PhotonNetwork.sendRate + " " + PhotonNetwork.sendRateOnSerialize);
 
-			Destroy (bodyProxy.gameObject);
+		}
+		else
+		{
+			print("net: " + PhotonNetwork.sendRate + " " + PhotonNetwork.sendRateOnSerialize);
+
+			Destroy(bodyProxy.gameObject);
 			bodyProxy = null;
 
 			Physics.gravity *= gravityScale;
@@ -146,17 +152,18 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 
 	void OnPhotonInstantiate(PhotonMessageInfo info)
 	{
-		
+
 	}
-	
-	void Update () {
+
+	void Update()
+	{
 
 		if (!m_PhotonView.isMine)
 		{
 			UpdateBodyRenderers();
 			return;
 		}
-		
+
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
 			jumping = true;
@@ -175,9 +182,9 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 		Physics.Raycast(eyes.transform.position, eyes.transform.forward, out hit);
 		targetObj.transform.position = hit.point;
 
-		if(punching)
+		if (punching)
 		{
-			if(Time.time - punchTime > punchCooldown)
+			if (Time.time - punchTime > punchCooldown)
 			{
 				punching = false;
 				GetComponentInChildren<SBAnimator>().StopPunch();
@@ -189,7 +196,7 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 
 		if (!aiming && (Input.GetButtonDown("Fire1")))
 		{
-			if(ballCatcher.HasBall())
+			if (ballCatcher.HasBall())
 			{
 				aiming = true;
 				throwAngle = startThrowAngle;
@@ -207,16 +214,16 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 			}
 		}
 
-		if(aiming)
+		if (aiming)
 		{
-			if(ballCatcher.HasBall())
+			if (ballCatcher.HasBall())
 			{
 				throwAngle = Mathf.Clamp(throwAngle, startThrowAngle, maxThrowAngle);
 
-				if(Input.GetButtonUp("Fire1"))
+				if (Input.GetButtonUp("Fire1"))
 				{
 					aiming = false;
-				
+
 					Vector3 vel = ComputeThrowVelocity(hit.point, ballSocket.position, throwAngle);
 					ballCatcher.ThrowBall(vel);
 				}
@@ -232,16 +239,17 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 
 	bool punchForceApplied;
 
-	void FixedUpdate() {
+	void FixedUpdate()
+	{
 
 		Vector3 force = bodyForce;
 
 		if (photonView.isMine)
 		{
-			
-			if(!IsBodyGrounded(body))
+
+			if (!IsBodyGrounded(body))
 			{
-				if(jumping)
+				if (jumping)
 				{
 					jumping = false;
 				}
@@ -249,15 +257,15 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 				force = Vector3.zero;
 			}
 
-			if(punching)
+			if (punching)
 			{
 				force = Vector3.zero;
 			}
 
-			if(punched)
+			if (punched)
 			{
 				force = Vector3.zero;
-				if(Time.time - punchedTime > punchedRecovery)
+				if (Time.time - punchedTime > punchedRecovery)
 				{
 					punched = false;
 					GetComponentInChildren<SBAnimator>().StopPunched();
@@ -266,12 +274,12 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 
 			ApplyBodyForces(body, force, sprint, jumping, punching && !punchForceApplied, punchDir);
 
-			if(punching && !punchForceApplied)
+			if (punching && !punchForceApplied)
 			{
 				punchForceApplied = true;
 			}
 
-			if(jumping)
+			if (jumping)
 			{
 				jumping = false;
 				sendJump = true;
@@ -283,15 +291,15 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 		}
 		else
 		{
-			if(!IsBodyGrounded(bodyProxy.GetComponent<Rigidbody>()))
+			if (!IsBodyGrounded(bodyProxy.GetComponent<Rigidbody>()))
 			{
 				force = Vector3.zero;
 			}
 
-			if(punching)
+			if (punching)
 			{
 				force = Vector3.zero;
-				if(Time.time - punchTime > punchCooldown)
+				if (Time.time - punchTime > punchCooldown)
 				{
 					punching = false;
 					GetComponentInChildren<SBAnimator>().StopPunch();
@@ -329,22 +337,22 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 
 			ApplyBodyForces(bodyProxy.GetComponent<Rigidbody>(), force, sprint, sendJump, punching && !punchForceApplied, punchDir);
 
-			if(punching && !punchForceApplied)
+			if (punching && !punchForceApplied)
 			{
 				punchForceApplied = true;
 			}
 
 			sendJump = false;
 			jumpConsumed = true;
-		}	
-		
+		}
+
 	}
-	
+
 	void ApplyBodyForces(Rigidbody _body, Vector3 _force, bool _sprint, bool _jump, bool _punch, Vector3 _punchDir)
 	{
 		_force.Normalize();
 		_force *= maxForce;
-		
+
 		if (_sprint)
 		{
 			_force *= sprintBoost;
@@ -358,8 +366,8 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 		{
 			_body.drag = stopDrag;
 		}
-		
-		
+
+
 		//Reduced turning speed based on current velocity
 		//the faster I run the less I can turn
 		if (_body.velocity.magnitude > 0.01f)
@@ -377,18 +385,18 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 		}
 
 		_body.AddForce(_force);
-		
-		if(!IsBodyGrounded(_body))
+
+		if (!IsBodyGrounded(_body))
 		{
 			_body.drag = 0;
 		}
 
-		if(_jump)
+		if (_jump)
 		{
 			_body.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
 		}
 
-		if(_punch)
+		if (_punch)
 		{
 			_body.AddForce(_punchDir.normalized * punchDashForce, ForceMode.Impulse);
 		}
@@ -396,15 +404,16 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 
 	public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
 	{
-		if (stream.isWriting) {
+		if (stream.isWriting)
+		{
 
 			localInput = false;
 
 			GetMovementInputs();
 
-			stream.SendNext (bodyForce);
-			stream.SendNext (sendJump);
-			stream.SendNext (sprint);
+			stream.SendNext(bodyForce);
+			stream.SendNext(sendJump);
+			stream.SendNext(sprint);
 			stream.SendNext(sendPunch);
 			stream.SendNext(punchDir);
 
@@ -414,8 +423,8 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 		}
 		else
 		{
-			
-			bodyForce = (Vector3)stream.ReceiveNext ();
+
+			bodyForce = (Vector3)stream.ReceiveNext();
 			bool jump = (bool)stream.ReceiveNext();
 			sprint = (bool)stream.ReceiveNext();
 			bool punch = (bool)stream.ReceiveNext();
@@ -427,7 +436,7 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 				jumpConsumed = false;
 			}
 
-			if(punch)
+			if (punch)
 			{
 				punching = true;
 				punchTime = Time.time;
@@ -446,11 +455,11 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 		LHorizontal = Input.GetAxis("LHorizontal");
 		LVertical = Input.GetAxis("LVertical");
 
-		RTrigger = Input.GetAxis("RTrigger");
-		LTrigger = Input.GetAxis("LTrigger");
+		//RTrigger = Input.GetAxis("RTrigger");
+		//LTrigger = Input.GetAxis("LTrigger");
 
 		sprint = Input.GetKey(KeyCode.LeftShift);
-		
+
 		if (Input.GetKey(KeyCode.A))
 			LHorizontal = -1;
 		if (Input.GetKey(KeyCode.D))
@@ -460,7 +469,7 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 		if (Input.GetKey(KeyCode.S))
 			LVertical = -1;
 
-		if(bodyObject == null)
+		if (bodyObject == null)
 		{
 			return;
 		}
@@ -521,12 +530,12 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 
 		float sqrtArg = x * x * Physics.gravity.magnitude / (x * Mathf.Sin(2 * angle) - 2 * y * Mathf.Pow(Mathf.Cos(angle), 2));
 
-		if(sqrtArg < 0)
+		if (sqrtArg < 0)
 		{
 			ballSpeed = maxThrowVel;
 		}
 		else
-		{ 
+		{
 			ballSpeed = Mathf.Sqrt(sqrtArg);
 		}
 
@@ -567,7 +576,7 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable {
 		GetComponentInChildren<SBAnimator>().PlayPunched();
 
 		//Drop the ball if have it
-		if(ballCatcher != null && ballCatcher.HasBall())
+		if (ballCatcher != null && ballCatcher.HasBall())
 		{
 			ballCatcher.DropBall();
 		}
