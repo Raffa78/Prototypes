@@ -85,6 +85,7 @@ public class SBBall : MonoBehaviour, IPunObservable
 	{
 		if(stream.isWriting)
 		{
+			print(Time.frameCount + ": stream is writing");
 			takingOver = false;
 			stream.SendNext(isCatched);
 		}
@@ -92,8 +93,10 @@ public class SBBall : MonoBehaviour, IPunObservable
 		{
 			if(!takingOver)
 			{
+				print(Time.frameCount + ": stream is reading and not taking over");
 				isCatched = (bool)stream.ReceiveNext();
 			}
+			print(Time.frameCount + ": stream is reading and taking over");
 		}
 
 	}
