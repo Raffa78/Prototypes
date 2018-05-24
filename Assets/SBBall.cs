@@ -83,23 +83,15 @@ public class SBBall : MonoBehaviour, IPunObservable
 
 	public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
 	{
-		print(Time.frameCount + ": photonView.isMine = " + photonView.isMine);
 		if(stream.isWriting)
 		{
-			print(Time.frameCount + ": stream is writing");
-			takingOver = false;
 			stream.SendNext(isCatched);
 		}
 		else
 		{
-			if(!takingOver)
+			if(!photonView.isMine)
 			{
-				print(Time.frameCount + ": stream is reading and not taking over");
 				isCatched = (bool)stream.ReceiveNext();
-			}
-			else
-			{
-				print(Time.frameCount + ": stream is reading and taking over");
 			}
 		}
 
