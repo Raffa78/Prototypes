@@ -27,7 +27,7 @@ public class AnimatedSword : MonoBehaviour {
 
 	float hitTime;
 
-	ConfigurableJoint lastHitJoint;
+	ConfigurableJoint lastHitJoint = null;
 
 	float reenableMotorsDuration = 4.0f;
 	float spring = 20f;//1000f;
@@ -221,7 +221,7 @@ public class AnimatedSword : MonoBehaviour {
 		{
 			PhotonNetwork.Destroy (body.GetComponentInParent<DualStickFly> ().gameObject);
 			Vector3 position = GameObject.Find("Spawn").transform.position;
-			GameObject newPlayerObject = PhotonNetwork.Instantiate( "TestPlayer", position, Quaternion.identity, 0 );
+			PhotonNetwork.Instantiate( "TestPlayer", position, Quaternion.identity, 0 );
 		}
 
 		PhotonNetwork.RPC(photonView, "HitRoundTrip", PhotonTargets.Others, false, null);

@@ -13,7 +13,7 @@ public class PlayerSpawn : MonoBehaviour {
 	void OnJoinedRoom () {
 
 		Vector3 position = GameObject.Find("Spawn").transform.position;
-		GameObject newPlayerObject = PhotonNetwork.Instantiate( "TestPlayer", position, Quaternion.identity, 0 );
+		PhotonNetwork.Instantiate( "TestPlayer", position, Quaternion.identity, 0 );
 
 		//PhotonNetwork.sendRate = 30;
 		//PhotonNetwork.sendRateOnSerialize = 30; 

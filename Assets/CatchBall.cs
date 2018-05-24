@@ -7,15 +7,8 @@ public class CatchBall : MonoBehaviour
 
 	public Transform ballSocket;
 	Rigidbody ballBody;
-	Rigidbody body;
 
 	public float dropSpeed = 10.0f;
-
-	// Use this for initialization
-	void Start()
-	{
-		body = GetComponent<Rigidbody>();
-	}
 
 	// Update is called once per frame
 	void Update()
