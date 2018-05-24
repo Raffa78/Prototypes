@@ -494,7 +494,7 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable
 			}
 		}
 
-		if(Input.GetMouseButtonDown(0))
+		if(Input.GetButtonDown("Fire1"))
 		{
 			Cursor.lockState = CursorLockMode.Locked;
 			Cursor.visible = false;
