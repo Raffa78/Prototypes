@@ -55,7 +55,7 @@ public class Puncher : MonoBehaviour {
 		Rigidbody body = pv.GetComponent<Rigidbody>();
 		body.AddForce(hitForce, ForceMode.Impulse);
 
-		pv.GetComponentInParent<SBPlayer>().GetPunched();
+		pv.GetComponentInParent<NinjasPlayer>().GetPunched();
 
 		/*
 		AudioSource.PlayClipAtPoint(beingHitClip, body.position);
