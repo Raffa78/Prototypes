@@ -6,6 +6,7 @@ Temp/
 *.sln
 *.zip
 *.suo
+.vs/
 obj/
 
 Assets/Editor Default Resources/
@@ -15,3 +16,7 @@ Assets/umotion_project.asset.meta
 Assets/umotion_project.asset
 Assets/UMotion Examples.meta
 Assets/Editor Default Resources.meta
+/Packages/manifest.json
+/ProjectSettings/PresetManager.asset
+/ProjectSettings/ProjectVersion.txt
+/ProjectSettings/ProjectVersion.txt
