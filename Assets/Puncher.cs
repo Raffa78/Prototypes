@@ -24,6 +24,9 @@ public class Puncher : MonoBehaviour {
 
 	private void OnTriggerEnter(Collider other)
 	{
+        if (other.transform.parent == null ) {
+            return;
+        }
 		GameObject bodyProxy = other.transform.parent.gameObject;
 
 		if(bodyProxy.name != "BodyProxy")
