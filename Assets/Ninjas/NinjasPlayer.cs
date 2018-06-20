@@ -28,7 +28,7 @@ public class NinjasPlayer : Photon.MonoBehaviour, IPunObservable
 	float stopDrag = 10.0f;
 	float runninDrag = 7.0f;
 
-	float sprintBoost = 1.5f;
+	float sprintBoost = 1.8f;
 	public float sprintPool;  //0 to 1
 	float sprintEmptyRate = 1.0f;
 	float sprintFillRate = 0.2f;
