@@ -13,7 +13,12 @@ public class SprintSlider : MonoBehaviour {
 		slider = GetComponent<Slider>();
 		player = GetComponentInParent<SBPlayer>();
 
-		if(!player.GetComponent<PhotonView>().isMine)
+		if (player == null)
+		{
+			return;
+		}
+
+		if (!player.GetComponent<PhotonView>().isMine)
 		{
 			Destroy(gameObject);
 		}
@@ -21,6 +26,11 @@ public class SprintSlider : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if(player == null)
+		{
+			return;
+		}
+
 		slider.value = player.sprintPool;
 	}
 }

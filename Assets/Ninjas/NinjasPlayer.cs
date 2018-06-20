@@ -101,8 +101,8 @@ public class NinjasPlayer : Photon.MonoBehaviour, IPunObservable
 	IEnumerator Start()
 	{
 
-		//Cursor.lockState = CursorLockMode.Locked;
-		//Cursor.visible = false;
+		Cursor.lockState = CursorLockMode.Locked;
+		Cursor.visible = false;
 
 		bodyObject = transform.Find("Body");
 		body = bodyObject.GetComponent<Rigidbody>();
