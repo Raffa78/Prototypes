@@ -48,7 +48,7 @@ public class Puncher : MonoBehaviour {
 		int id = bodyProxy.transform.parent.Find("Body").GetComponent<PhotonView>().viewID;
 		pv.RPC("PunchOther", PhotonTargets.Others, id, hitForce);
 
-		bodyProxy.transform.parent.GetComponent<SBPlayer>().GetPunched();
+		bodyProxy.transform.parent.GetComponent<NinjasPlayer>().GetPunched();
 	}
 
 	[PunRPC]
