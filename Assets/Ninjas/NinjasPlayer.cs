@@ -22,13 +22,13 @@ public class NinjasPlayer : Photon.MonoBehaviour, IPunObservable
 	public float maxHTorque = 1.0f;
 	public float maxVTorque = 1.0f;
 
-	float maxForce = 300.0f;
+	float maxForce = 500.0f;
 	float maxRightForce = 600.0f;
 	float trainSpeed = 35.0f;
-	float stopDrag = 6.0f;
-	float runninDrag = 2.0f;
+	float stopDrag = 10.0f;
+	float runninDrag = 7.0f;
 
-	float sprintBoost = 3.0f;
+	float sprintBoost = 1.5f;
 	public float sprintPool;  //0 to 1
 	float sprintEmptyRate = 1.0f;
 	float sprintFillRate = 0.2f;
@@ -510,7 +510,7 @@ public class NinjasPlayer : Photon.MonoBehaviour, IPunObservable
 	void UpdateCursorVisibility()
 	{
 		return;
-
+		/*
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
 			if (Cursor.visible)
@@ -530,6 +530,7 @@ public class NinjasPlayer : Photon.MonoBehaviour, IPunObservable
 			Cursor.lockState = CursorLockMode.Locked;
 			Cursor.visible = false;
 		}
+		*/
 	}
 
 	void UpdateBodyRenderers()

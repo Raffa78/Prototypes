@@ -6,12 +6,12 @@ using UnityEngine.UI;
 public class SprintSlider : MonoBehaviour {
 
 	Slider slider;
-	SBPlayer player;
+	NinjasPlayer player;
 
 	// Use this for initialization
 	void Start () {
 		slider = GetComponent<Slider>();
-		player = GetComponentInParent<SBPlayer>();
+		player = GetComponentInParent<NinjasPlayer>();
 
 		if (player == null)
 		{

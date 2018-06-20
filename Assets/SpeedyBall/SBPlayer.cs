@@ -510,7 +510,7 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable
 	void UpdateCursorVisibility()
 	{
 		return;
-
+		/*
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
 			if (Cursor.visible)
@@ -530,6 +530,7 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable
 			Cursor.lockState = CursorLockMode.Locked;
 			Cursor.visible = false;
 		}
+		*/
 	}
 
 	void UpdateBodyRenderers()

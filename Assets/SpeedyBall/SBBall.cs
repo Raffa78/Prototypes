@@ -10,7 +10,7 @@ public class SBBall : MonoBehaviour, IPunObservable
 	PhotonView photonView;
 	Rigidbody myRigidbody;
 	bool isCatched;
-	bool takingOver;
+	//bool takingOver;
 
 	// Use this for initialization
 	IEnumerator Start() {
@@ -52,7 +52,7 @@ public class SBBall : MonoBehaviour, IPunObservable
 
 	public void TakeOver()
 	{
-		takingOver = true;
+		//takingOver = true;
 		photonView.TransferOwnership(PhotonNetwork.player.ID);
 	}
 
