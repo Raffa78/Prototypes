@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Puncher : MonoBehaviour {
 
+	public AudioClip hitClip;
+	public AudioClip beingHitClip;
+	public GameObject hitPrefab;
+
 	float punchForce = 180.0f;
 
 	Collider punchCollider;
@@ -35,6 +39,9 @@ public class Puncher : MonoBehaviour {
 			return;
 		}
 
+		AudioSource.PlayClipAtPoint(hitClip, transform.position);
+		Instantiate(hitPrefab, other.attachedRigidbody.position, Quaternion.identity);
+
 		bodyProxy.transform.Find("KinematicBodyProxy").gameObject.SetActive(false);
 
 		Vector3 hitForce = transform.parent.GetComponentInChildren<SBAnimator>().transform.forward;
@@ -59,8 +66,7 @@ public class Puncher : MonoBehaviour {
 		body.AddForce(hitForce, ForceMode.Impulse);
 
 		pv.GetComponentInParent<NinjasPlayer>().GetPunched();
-
-		/*
+		
 		AudioSource.PlayClipAtPoint(beingHitClip, body.position);
 		Instantiate(hitPrefab, body.position, Quaternion.identity);
 
@@ -72,7 +78,6 @@ public class Puncher : MonoBehaviour {
 			Vector3 position = GameObject.Find("Spawn").transform.position;
 			GameObject newPlayerObject = PhotonNetwork.Instantiate("TestPlayer", position, Quaternion.identity, 0);
 		}
-		*/
 		//PhotonNetwork.RPC(photonView, "HitRoundTrip", PhotonTargets.Others, false, null);
 	}
 

@@ -63,6 +63,7 @@ public class NinjasPlayer : Photon.MonoBehaviour, IPunObservable
 	bool jumpConsumed = true;
 	bool sprint;
 	float lastSprintInputTime;
+	float life;
 
 	PhotonView m_PhotonView;
 
@@ -96,6 +97,8 @@ public class NinjasPlayer : Photon.MonoBehaviour, IPunObservable
 		VLookMinAngle = VRotBody.GetComponent<HingeJoint>().limits.min;
 
 		ballCatcher = GetComponentInChildren<CatchBall>();
+
+		life = 0.0f;
 	}
 
 	IEnumerator Start()
@@ -421,6 +424,7 @@ public class NinjasPlayer : Photon.MonoBehaviour, IPunObservable
 			stream.SendNext(sprint);
 			stream.SendNext(sendPunch);
 			stream.SendNext(punchDir);
+			stream.SendNext(life);
 
 			sendJump = false;
 			sendPunch = false;
@@ -434,6 +438,7 @@ public class NinjasPlayer : Photon.MonoBehaviour, IPunObservable
 			sprint = (bool)stream.ReceiveNext();
 			bool punch = (bool)stream.ReceiveNext();
 			punchDir = (Vector3)stream.ReceiveNext();
+			life = (float)stream.ReceiveNext();
 
 			if (jumpConsumed)
 			{
@@ -635,6 +640,15 @@ public class NinjasPlayer : Photon.MonoBehaviour, IPunObservable
 			joint.xDrive = drive;
 			joint.yDrive = drive;
 			joint.zDrive = drive;
+		}
+
+		body.GetComponentInChildren<AnimatedSword>().countToDeath--;
+
+		if (body.GetComponentInChildren<AnimatedSword>().countToDeath == 0)
+		{
+			PhotonNetwork.Destroy(body.GetComponentInParent<DualStickFly>().gameObject);
+			Vector3 position = GameObject.Find("Spawn").transform.position;
+			GameObject newPlayerObject = PhotonNetwork.Instantiate("TestPlayer", position, Quaternion.identity, 0);
 		}
 	}
 }
