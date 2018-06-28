@@ -24,6 +24,9 @@ public class Puncher : MonoBehaviour {
 
 	private void OnTriggerEnter(Collider other)
 	{
+        if (other.transform.parent == null ) {
+            return;
+        }
 		GameObject bodyProxy = other.transform.parent.gameObject;
 
 		if(bodyProxy.name != "BodyProxy")
@@ -45,7 +48,7 @@ public class Puncher : MonoBehaviour {
 		int id = bodyProxy.transform.parent.Find("Body").GetComponent<PhotonView>().viewID;
 		pv.RPC("PunchOther", PhotonTargets.Others, id, hitForce);
 
-		bodyProxy.transform.parent.GetComponent<SBPlayer>().GetPunched();
+		bodyProxy.transform.parent.GetComponent<NinjasPlayer>().GetPunched();
 	}
 
 	[PunRPC]
@@ -55,7 +58,7 @@ public class Puncher : MonoBehaviour {
 		Rigidbody body = pv.GetComponent<Rigidbody>();
 		body.AddForce(hitForce, ForceMode.Impulse);
 
-		pv.GetComponentInParent<SBPlayer>().GetPunched();
+		pv.GetComponentInParent<NinjasPlayer>().GetPunched();
 
 		/*
 		AudioSource.PlayClipAtPoint(beingHitClip, body.position);

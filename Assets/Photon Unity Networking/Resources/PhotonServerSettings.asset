@@ -46,4 +46,5 @@ MonoBehaviour:
   - SetSwingTriggerToProxy
   - HitRoundTrip
   - PunchOther
+  - Score
   DisableAutoOpenWizard: 1

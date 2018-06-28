@@ -29,6 +29,9 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable
 	float runninDrag = 2.0f;
 
 	float sprintBoost = 3.0f;
+	public float sprintPool;  //0 to 1
+	float sprintEmptyRate = 1.0f;
+	float sprintFillRate = 0.2f;
 
 	float jumpForce = 200.0f;
 
@@ -59,6 +62,7 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable
 	bool sendJump;
 	bool jumpConsumed = true;
 	bool sprint;
+	float lastSprintInputTime;
 
 	PhotonView m_PhotonView;
 
@@ -97,8 +101,8 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable
 	IEnumerator Start()
 	{
 
-		Cursor.lockState = CursorLockMode.Locked;
-		Cursor.visible = false;
+		//Cursor.lockState = CursorLockMode.Locked;
+		//Cursor.visible = false;
 
 		bodyObject = transform.Find("Body");
 		body = bodyObject.GetComponent<Rigidbody>();
@@ -210,7 +214,8 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable
 				punching = true;
 				punchForceApplied = false;
 				sendPunch = true;
-				punchDir = body.velocity.normalized;
+				punchDir = GetComponentInChildren<SBAnimator>().transform.forward;
+				
 			}
 		}
 
@@ -458,7 +463,31 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable
 		//RTrigger = Input.GetAxis("RTrigger");
 		//LTrigger = Input.GetAxis("LTrigger");
 
-		sprint = Input.GetKey(KeyCode.LeftShift);
+		float deltaTime = Time.time - lastSprintInputTime;
+		lastSprintInputTime = Time.time;
+
+		bool sprintKey = Input.GetKey(KeyCode.LeftShift);
+
+		if(sprintKey)
+		{
+			sprintPool -= sprintEmptyRate * deltaTime;
+
+			if(sprintPool <= 0.0f)
+			{
+				sprintPool = 0.0f;
+				sprint = false;
+			}
+			else
+			{
+				sprint = true;
+			}
+		}
+		else
+		{
+			sprintPool += sprintFillRate * deltaTime;
+			sprintPool = Mathf.Clamp01(sprintPool);
+			sprint = false;
+		}
 
 		if (Input.GetKey(KeyCode.A))
 			LHorizontal = -1;
@@ -480,6 +509,8 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable
 
 	void UpdateCursorVisibility()
 	{
+		return;
+		/*
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
 			if (Cursor.visible)
@@ -499,6 +530,7 @@ public class SBPlayer : Photon.MonoBehaviour, IPunObservable
 			Cursor.lockState = CursorLockMode.Locked;
 			Cursor.visible = false;
 		}
+		*/
 	}
 
 	void UpdateBodyRenderers()
