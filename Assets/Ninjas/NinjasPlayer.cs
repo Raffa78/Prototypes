@@ -63,7 +63,7 @@ public class NinjasPlayer : Photon.MonoBehaviour, IPunObservable
 	bool jumpConsumed = true;
 	bool sprint;
 	float lastSprintInputTime;
-	float life;
+	int life = 5;
 
 	PhotonView m_PhotonView;
 
@@ -642,9 +642,9 @@ public class NinjasPlayer : Photon.MonoBehaviour, IPunObservable
 			joint.zDrive = drive;
 		}
 
-		body.GetComponentInChildren<AnimatedSword>().countToDeath--;
+		life--;
 
-		if (body.GetComponentInChildren<AnimatedSword>().countToDeath == 0)
+		if (life == 0)
 		{
 			PhotonNetwork.Destroy(body.GetComponentInParent<DualStickFly>().gameObject);
 			Vector3 position = GameObject.Find("Spawn").transform.position;
