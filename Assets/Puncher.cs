@@ -41,7 +41,7 @@ public class Puncher : MonoBehaviour {
 		}
 
 		AudioSource.PlayClipAtPoint(hitClip, transform.position);
-		Instantiate(hitPrefab, other.attachedRigidbody.position, Quaternion.identity);
+		Instantiate(hitPrefab, transform.position, Quaternion.identity);
 
 		bodyProxy.transform.Find("KinematicBodyProxy").gameObject.SetActive(false);
 
@@ -54,13 +54,13 @@ public class Puncher : MonoBehaviour {
 		hitBody.AddForce(hitForce, ForceMode.Impulse);
 
 		int id = bodyProxy.transform.parent.Find("Body").GetComponent<PhotonView>().viewID;
-		pv.RPC("PunchOther", PhotonTargets.Others, id, hitForce);
+		pv.RPC("PunchOther", PhotonTargets.Others, id, hitForce, transform.position);
 
 		bodyProxy.transform.parent.GetComponent<NinjasPlayer>().GetPunched();
 	}
 
 	[PunRPC]
-	public void PunchOther(int ID, Vector3 hitForce)
+	public void PunchOther(int ID, Vector3 hitForce, Vector3 hitPosition)
 	{
 		PhotonView pv = PhotonView.Find(ID);
 		Rigidbody body = pv.GetComponent<Rigidbody>();
@@ -68,8 +68,8 @@ public class Puncher : MonoBehaviour {
 
 		pv.GetComponentInParent<NinjasPlayer>().GetPunched();
 		
-		AudioSource.PlayClipAtPoint(beingHitClip, body.position);
-		Instantiate(beingHitPrefab, body.position, Quaternion.identity);
+		AudioSource.PlayClipAtPoint(beingHitClip, hitPosition);
+		Instantiate(beingHitPrefab, hitPosition, Quaternion.identity);
 		
 		//PhotonNetwork.RPC(photonView, "HitRoundTrip", PhotonTargets.Others, false, null);
 	}
