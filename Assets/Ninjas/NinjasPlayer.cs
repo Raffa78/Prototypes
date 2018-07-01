@@ -98,7 +98,7 @@ public class NinjasPlayer : Photon.MonoBehaviour, IPunObservable
 
 		ballCatcher = GetComponentInChildren<CatchBall>();
 
-		life = 0.0f;
+		life = 0;
 	}
 
 	IEnumerator Start()
@@ -438,7 +438,7 @@ public class NinjasPlayer : Photon.MonoBehaviour, IPunObservable
 			sprint = (bool)stream.ReceiveNext();
 			bool punch = (bool)stream.ReceiveNext();
 			punchDir = (Vector3)stream.ReceiveNext();
-			life = (float)stream.ReceiveNext();
+			life = (int)stream.ReceiveNext();
 
 			if (jumpConsumed)
 			{
