@@ -646,9 +646,9 @@ public class NinjasPlayer : Photon.MonoBehaviour, IPunObservable
 
 		if (life == 0)
 		{
-			PhotonNetwork.Destroy(body.GetComponentInParent<DualStickFly>().gameObject);
+			PhotonNetwork.Destroy(gameObject);
 			Vector3 position = GameObject.Find("Spawn").transform.position;
-			GameObject newPlayerObject = PhotonNetwork.Instantiate("TestPlayer", position, Quaternion.identity, 0);
+			GameObject newPlayerObject = PhotonNetwork.Instantiate("NinjasPlayer", position, Quaternion.identity, 0);
 		}
 	}
 }

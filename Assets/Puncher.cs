@@ -7,6 +7,7 @@ public class Puncher : MonoBehaviour {
 	public AudioClip hitClip;
 	public AudioClip beingHitClip;
 	public GameObject hitPrefab;
+	public GameObject beingHitPrefab;
 
 	float punchForce = 180.0f;
 
@@ -68,16 +69,8 @@ public class Puncher : MonoBehaviour {
 		pv.GetComponentInParent<NinjasPlayer>().GetPunched();
 		
 		AudioSource.PlayClipAtPoint(beingHitClip, body.position);
-		Instantiate(hitPrefab, body.position, Quaternion.identity);
-
-		body.GetComponentInChildren<AnimatedSword>().countToDeath--;
-
-		if (body.GetComponentInChildren<AnimatedSword>().countToDeath == 0)
-		{
-			PhotonNetwork.Destroy(body.GetComponentInParent<DualStickFly>().gameObject);
-			Vector3 position = GameObject.Find("Spawn").transform.position;
-			GameObject newPlayerObject = PhotonNetwork.Instantiate("TestPlayer", position, Quaternion.identity, 0);
-		}
+		Instantiate(beingHitPrefab, body.position, Quaternion.identity);
+		
 		//PhotonNetwork.RPC(photonView, "HitRoundTrip", PhotonTargets.Others, false, null);
 	}
 
