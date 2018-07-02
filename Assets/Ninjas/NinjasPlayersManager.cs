@@ -109,13 +109,21 @@ public class NinjasPlayersManager : MonoBehaviour
 	void OnPlayerDeath(NinjasPlayer player, int killingPlayerID)
 	{
 		pv.RPC("PlayerWasKilled", PhotonTargets.All, PhotonNetwork.player.ID, killingPlayerID);
-		//TODO: respawn if local player
+		
+		SpawnLocalPlayer();
 	}
 
 	[PunRPC]
 	public void PlayerWasKilled(int killedPlayerID, int killingPlayerID)
 	{
-		//TODO: update killing player score +1
+		//Update player score
+		PlayerInfo pInfo = new PlayerInfo();
+		playerDic.TryGetValue(killingPlayerID, out pInfo);
+
+		pInfo.score++;
+		pInfo.playerPane.transform.Find("Score").GetComponent<Text>().text = pInfo.score.ToString();
+
+
 	}
 
 	public static void StartListening(string eventName, UnityAction listener)
