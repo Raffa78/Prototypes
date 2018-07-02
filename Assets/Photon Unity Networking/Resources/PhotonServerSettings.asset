@@ -47,4 +47,6 @@ MonoBehaviour:
   - HitRoundTrip
   - PunchOther
   - Score
+  - PlayerDied
+  - PlayerSpawned
   DisableAutoOpenWizard: 1

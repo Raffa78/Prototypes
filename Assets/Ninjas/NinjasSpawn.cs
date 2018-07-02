@@ -18,10 +18,15 @@ public class NinjasSpawn : MonoBehaviour {
 	void OnJoinedRoom()
 	{
 
-		Vector3 position = GameObject.Find("Spawn").transform.position;
-		PhotonNetwork.Instantiate("NinjasPlayer", position, Quaternion.identity, 0);
-
+		SpawnPlayer();
+		
 		//PhotonNetwork.sendRate = 30;
 		//PhotonNetwork.sendRateOnSerialize = 30; 
+	}
+
+	void SpawnPlayer()
+	{
+		Vector3 position = GameObject.Find("Spawn").transform.position;
+		PhotonNetwork.Instantiate("NinjasPlayer", position, Quaternion.identity, 0);
 	}
 }

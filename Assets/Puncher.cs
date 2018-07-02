@@ -54,19 +54,19 @@ public class Puncher : MonoBehaviour {
 		hitBody.AddForce(hitForce, ForceMode.Impulse);
 
 		int id = bodyProxy.transform.parent.Find("Body").GetComponent<PhotonView>().viewID;
-		pv.RPC("PunchOther", PhotonTargets.Others, id, hitForce, transform.position);
+		pv.RPC("PunchOther", PhotonTargets.Others, id, hitForce, transform.position, PhotonNetwork.player.ID);
 
-		bodyProxy.transform.parent.GetComponent<NinjasPlayer>().GetPunched();
+		bodyProxy.transform.parent.GetComponent<NinjasPlayer>().GetPunched(PhotonNetwork.player.ID);
 	}
 
 	[PunRPC]
-	public void PunchOther(int ID, Vector3 hitForce, Vector3 hitPosition)
+	public void PunchOther(int ID, Vector3 hitForce, Vector3 hitPosition, int playerID)
 	{
 		PhotonView pv = PhotonView.Find(ID);
 		Rigidbody body = pv.GetComponent<Rigidbody>();
 		body.AddForce(hitForce, ForceMode.Impulse);
 
-		pv.GetComponentInParent<NinjasPlayer>().GetPunched();
+		pv.GetComponentInParent<NinjasPlayer>().GetPunched(playerID);
 		
 		AudioSource.PlayClipAtPoint(beingHitClip, hitPosition);
 		Instantiate(beingHitPrefab, hitPosition, Quaternion.identity);

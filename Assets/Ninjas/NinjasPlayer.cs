@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class NinjasPlayer : Photon.MonoBehaviour, IPunObservable
 {
@@ -67,6 +68,7 @@ public class NinjasPlayer : Photon.MonoBehaviour, IPunObservable
 
 	PhotonView m_PhotonView;
 
+	public event Action<NinjasPlayer, int> OnDeath = (x, y) => { };
 
 
 	float throwAngle;
@@ -610,7 +612,7 @@ public class NinjasPlayer : Photon.MonoBehaviour, IPunObservable
 		body.rotation = HRotBody.transform.rotation;
 	}
 
-	public void GetPunched()
+	public void GetPunched(int punchingPlayer)
 	{
 		punched = true;
 		punchedTime = Time.time;
@@ -641,14 +643,15 @@ public class NinjasPlayer : Photon.MonoBehaviour, IPunObservable
 			joint.yDrive = drive;
 			joint.zDrive = drive;
 		}
-
-		life--;
-
-		if (life == 0)
+		
+		if(PhotonNetwork.player == photonView.owner)
 		{
-			PhotonNetwork.Destroy(gameObject);
-			Vector3 position = GameObject.Find("Spawn").transform.position;
-			GameObject newPlayerObject = PhotonNetwork.Instantiate("NinjasPlayer", position, Quaternion.identity, 0);
+			life--;
+
+			if(life == 0)
+			{
+				OnDeath.Invoke(this, punchingPlayer);
+			}
 		}
 	}
 }
