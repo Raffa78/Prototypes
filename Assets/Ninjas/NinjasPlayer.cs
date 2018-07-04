@@ -100,7 +100,7 @@ public class NinjasPlayer : Photon.MonoBehaviour, IPunObservable
 
 		ballCatcher = GetComponentInChildren<CatchBall>();
 
-		life = 0;
+		life = 5;
 	}
 
 	IEnumerator Start()
