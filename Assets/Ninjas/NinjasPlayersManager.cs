@@ -129,7 +129,7 @@ public class NinjasPlayersManager : Photon.PunBehaviour
 	{
 		print("PlayerDeeath!");
 		pv.RPC("PlayerWasKilled", PhotonTargets.All, PhotonNetwork.player.ID, killingPlayerID);
-		
+		PhotonNetwork.Destroy(player.gameObject);
 		SpawnLocalPlayer();
 	}
 
