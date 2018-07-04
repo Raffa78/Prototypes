@@ -93,6 +93,11 @@ public class NinjasPlayersManager : Photon.PunBehaviour
 	
 	public void AddPlayerToPanel(int playerID)
 	{
+		if(playerDic.ContainsKey(playerID))
+		{
+			return;
+		}
+
 		//TODO: add player pane
 		GameObject go;
 		PlayerInfo pInfo;
