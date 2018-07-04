@@ -46,8 +46,7 @@ public class NinjasPlayersManager : Photon.PunBehaviour
 			return eventManager;
 		}
 	}
-
-
+	
 	void Start()
 	{
 		pv = GetComponent<PhotonView>();
@@ -68,7 +67,7 @@ public class NinjasPlayersManager : Photon.PunBehaviour
 		
 		foreach(PhotonPlayer player in PhotonNetwork.playerList)
 		{
-			AddPlayerToPanel(PhotonNetwork.player.ID);
+			AddPlayerToPanel(player.ID);
 		}
 
 		//PhotonNetwork.sendRate = 30;
@@ -128,6 +127,7 @@ public class NinjasPlayersManager : Photon.PunBehaviour
 
 	void OnPlayerDeath(NinjasPlayer player, int killingPlayerID)
 	{
+		print("PlayerDeeath!");
 		pv.RPC("PlayerWasKilled", PhotonTargets.All, PhotonNetwork.player.ID, killingPlayerID);
 		
 		SpawnLocalPlayer();
