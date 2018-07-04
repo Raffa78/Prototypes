@@ -648,8 +648,12 @@ public class NinjasPlayer : Photon.MonoBehaviour, IPunObservable
 		{
 			life--;
 
+			print("life> " + life);
+
 			if(life == 0)
 			{
+				print("dead");
+
 				OnDeath.Invoke(this, punchingPlayer);
 			}
 		}
