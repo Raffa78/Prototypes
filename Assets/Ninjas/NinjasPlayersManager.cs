@@ -10,7 +10,7 @@ public class NinjasPlayersManager : Photon.PunBehaviour
 	public GameObject playerPane;
 	public GameObject playerBoard;
 
-	struct PlayerInfo
+	class PlayerInfo
 	{
 		public GameObject playerPane;
 		public string name;
@@ -138,7 +138,7 @@ public class NinjasPlayersManager : Photon.PunBehaviour
 	{
 		print("Playerwaskilled!");
 		//Update player score
-		PlayerInfo pInfo = new PlayerInfo();
+		PlayerInfo  pInfo;
 		playerDic.TryGetValue(killingPlayerID, out pInfo);
 
 		pInfo.score++;
