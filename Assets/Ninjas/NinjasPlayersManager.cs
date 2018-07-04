@@ -136,6 +136,7 @@ public class NinjasPlayersManager : Photon.PunBehaviour
 	[PunRPC]
 	public void PlayerWasKilled(int killedPlayerID, int killingPlayerID)
 	{
+		print("Playerwaskilled!");
 		//Update player score
 		PlayerInfo pInfo = new PlayerInfo();
 		playerDic.TryGetValue(killingPlayerID, out pInfo);
