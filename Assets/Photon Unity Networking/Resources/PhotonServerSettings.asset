@@ -49,4 +49,5 @@ MonoBehaviour:
   - Score
   - PlayerDied
   - PlayerSpawned
+  - PlayerWasKilled
   DisableAutoOpenWizard: 1

@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
-public class NinjasPlayersManager : MonoBehaviour
+public class NinjasPlayersManager : Photon.PunBehaviour
 {
 
 	public GameObject playerPane;
@@ -60,13 +60,26 @@ public class NinjasPlayersManager : MonoBehaviour
 		}
 	}
 
-	void OnJoinedRoom()
+	public override void OnJoinedRoom()
 	{
+		base.OnJoinedRoom();
 
 		SpawnLocalPlayer();
+		
+		foreach(PhotonPlayer player in PhotonNetwork.playerList)
+		{
+			AddPlayerToPanel(PhotonNetwork.player.ID);
+		}
 
 		//PhotonNetwork.sendRate = 30;
 		//PhotonNetwork.sendRateOnSerialize = 30; 
+	}
+
+	public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
+	{
+		base.OnPhotonPlayerConnected(newPlayer);
+
+		AddPlayerToPanel(newPlayer.ID);
 	}
 
 	void SpawnLocalPlayer()
@@ -74,36 +87,38 @@ public class NinjasPlayersManager : MonoBehaviour
 		Vector3 position = GameObject.Find("Spawn").transform.position;
 		GameObject go = PhotonNetwork.Instantiate("NinjasPlayer", position, Quaternion.identity, 0);
 
-		pv.RPC("PlayerSpawned", PhotonTargets.All, PhotonNetwork.player.ID);
-
 		NinjasPlayer player = go.GetComponent<NinjasPlayer>();
 		player.OnDeath += OnPlayerDeath;
 	}
-
-	[PunRPC]
-	public void PlayerSpawned(int playerID)
+	
+	public void AddPlayerToPanel(int playerID)
 	{
 		//TODO: add player pane
-		GameObject go = GameObject.Instantiate(playerPane);
+		GameObject go;
+		PlayerInfo pInfo;
+		
+		go = GameObject.Instantiate(playerPane);
 		go.transform.parent = playerBoard.transform;
 
-		PlayerInfo playerInfo = new PlayerInfo();
-		playerInfo.playerPane = go;
-		//playerInfo.name = PhotonPlayer.Find(playerID).NickName;
-		if(PhotonPlayer.Find(playerID) == PhotonNetwork.player)
+		pInfo = new PlayerInfo();
+		pInfo.playerPane = go;
+
+		if (PhotonPlayer.Find(playerID) == PhotonNetwork.player)
 		{
-			playerInfo.name = "ME";
+			pInfo.name = "ME";
 		}
 		else
 		{
-			playerInfo.name = "OTHER";
+			pInfo.name = "OTHER";
 		}
 
-		playerInfo.score = 0;
-		playerDic.Add(playerID, playerInfo);
+		playerDic.Add(playerID, pInfo);
 
-		go.transform.Find("Name").GetComponent<Text>().text = playerInfo.name;
-		go.transform.Find("Score").GetComponent<Text>().text = playerInfo.score.ToString();
+		pInfo.score = 0;
+		
+
+		go.transform.Find("Name").GetComponent<Text>().text = pInfo.name;
+		go.transform.Find("Score").GetComponent<Text>().text = pInfo.score.ToString();
 	}
 
 	void OnPlayerDeath(NinjasPlayer player, int killingPlayerID)
